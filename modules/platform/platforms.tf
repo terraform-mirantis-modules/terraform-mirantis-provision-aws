@@ -501,7 +501,7 @@ locals {
     "windows_2019" : {
       "ami_name" : "Windows_Server-2019-English-Core-Base-*",
       "owner" : "801119661308",
-      "connection" : "ssh",
+      "interface" : "Ethernet 3"
       "connection" : "winrm",
       "winrm_user" : "Administrator",
       "winrm_useHTTPS" : true
