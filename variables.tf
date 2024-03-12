@@ -46,15 +46,16 @@ variable "enable_vpn_gateway" {
 variable "nodegroups" {
   description = "A map of machine group definitions"
   type = map(object({
-    ami              = string
-    keypair_id       = string
-    type             = string
-    count            = number
-    root_device_name = string
-    volume_size      = number
-    role             = string
-    public           = bool
-    user_data        = string
+    ami                   = string
+    keypair_id            = string
+    type                  = string
+    count                 = number
+    root_device_name      = string
+    volume_size           = number
+    role                  = string
+    public                = bool
+    user_data             = string
+    instance_profile_name = optional(string)
   }))
   default = {}
 }

@@ -22,6 +22,9 @@ module "mg" {
   user_data = base64encode(var.user_data)
   key_name  = var.key_pair
 
+  create_iam_instance_profile = false
+  iam_instance_profile_name   = var.instance_profile_name
+
   launch_template_name = var.name
 
   instance_refresh = {
