@@ -53,3 +53,7 @@ variable "key_pair" {
   description = "AWS KeyPair name for nodes"
   type        = string
 }
+
+variable "instance_profile_name" {
+  description = "Existing instance profile name to be attached to the nodes"
+}

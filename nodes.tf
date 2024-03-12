@@ -6,13 +6,14 @@ module "nodegroups" {
 
   name = "${var.name}-${each.key}"
 
-  ami              = each.value.ami
-  type             = each.value.type
-  node_count       = each.value.count
-  root_device_name = each.value.root_device_name
-  volume_size      = each.value.volume_size
-  user_data        = each.value.user_data
-  key_pair         = each.value.keypair_id
+  ami                   = each.value.ami
+  type                  = each.value.type
+  node_count            = each.value.count
+  root_device_name      = each.value.root_device_name
+  volume_size           = each.value.volume_size
+  user_data             = each.value.user_data
+  key_pair              = each.value.keypair_id
+  instance_profile_name = each.value.instance_profile_name
 
   subnets         = module.vpc.public_subnets                                                                # TODO: right how we only support public nodes :(
   security_groups = [for k, sg in local.securitygroups_with_sg : sg.id if contains(sg.nodegroups, each.key)] # attach any sgs listed for this nodegroup
