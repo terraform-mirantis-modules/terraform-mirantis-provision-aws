@@ -27,6 +27,7 @@ module "ingress" {
   tags = merge({
     stack = var.name
     },
+    var.common_tags,
     each.value.tags
   )
 }

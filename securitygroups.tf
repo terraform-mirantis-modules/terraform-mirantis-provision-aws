@@ -10,7 +10,10 @@ resource "aws_security_group" "sg" {
     stack = var.name
     role  = "sg"
     unit  = each.key
-  }, each.value.tags)
+    },
+    var.common_tags,
+    each.value.tags
+  )
 
 
   dynamic "ingress" {
