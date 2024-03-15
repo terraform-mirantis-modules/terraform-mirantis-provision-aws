@@ -6,39 +6,25 @@ variable "name" {
 
 # ===  Networking ===
 
-variable "cidr" {
-  description = "cidr for the stack internal network"
-  type        = string
-  default     = "172.31.0.0/16"
-}
 
-variable "public_subnet_count" {
-  description = "How many public subnets to create. Subnets will be spread accross region AZs"
-  type        = number
-  default     = 3
-}
-
-variable "private_subnet_count" {
-  description = "How many private subnets to create. Subnets will be spread accross region AZs"
-  type        = number
-  default     = 3
-}
-
-variable "tags" {
-  description = "tags to be applied to created resources"
-  type        = map(string)
-}
-
-variable "enable_nat_gateway" {
-  description = "Should a NAT gateway be included in the cluster"
-  type        = bool
-  default     = false
-}
-
-variable "enable_vpn_gateway" {
-  description = "Should a VPN gateway be included in the cluster"
-  type        = bool
-  default     = false
+variable "network" {
+  description = "Network configuration"
+  type = object({
+    cidr                 = string
+    public_subnet_count  = number
+    private_subnet_count = number
+    enable_nat_gateway   = bool
+    enable_vpn_gateway   = bool
+    tags                 = map(string)
+  })
+  default = {
+    cidr                 = "172.31.0.0/16"
+    public_subnet_count  = 3
+    private_subnet_count = 0
+    enable_nat_gateway   = false
+    enable_vpn_gateway   = false
+    tags                 = {}
+  }
 }
 
 # === Machines ===
@@ -56,6 +42,7 @@ variable "nodegroups" {
     public                = bool
     user_data             = string
     instance_profile_name = optional(string)
+    tags                  = map(string)
   }))
   default = {}
 }
@@ -84,6 +71,7 @@ variable "securitygroups" {
       cidr_blocks = list(string)
       self        = bool
     })), [])
+    tags = map(string)
   }))
   default = {}
 }
@@ -101,6 +89,7 @@ variable "ingresses" {
       port_target   = number
       protocol      = string
     }))
+    tags = map(string)
   }))
   default = {}
 }
