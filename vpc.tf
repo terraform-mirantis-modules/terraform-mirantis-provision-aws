@@ -21,9 +21,10 @@ module "vpc" {
   enable_nat_gateway = var.enable_nat_gateway
   enable_vpn_gateway = var.enable_vpn_gateway
 
-  enable_dns_support      = true
-  enable_dns_hostnames    = true
-  map_public_ip_on_launch = true
+  enable_dns_support                                = true
+  enable_dns_hostnames                              = true
+  map_public_ip_on_launch                           = true
+  public_subnet_private_dns_hostname_type_on_launch = "resource-name"
 
   tags = merge({
     stack = var.name
