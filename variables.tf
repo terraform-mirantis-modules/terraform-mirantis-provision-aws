@@ -84,6 +84,7 @@ variable "securitygroups" {
       cidr_blocks = list(string)
       self        = bool
     })), [])
+    tags = optional(map(string))
   }))
   default = {}
 }
@@ -103,4 +104,9 @@ variable "ingresses" {
     }))
   }))
   default = {}
+}
+
+variable "kube_tags" {
+  description = "Kubernetes specific tags to be applied to created resources"
+  type        = map(string)
 }

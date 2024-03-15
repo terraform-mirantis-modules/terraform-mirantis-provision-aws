@@ -21,7 +21,8 @@ module "nodegroups" {
   tags = merge({
     stack = var.name
     },
-    var.tags
+    var.tags,
+    var.kube_tags,
   )
 }
 

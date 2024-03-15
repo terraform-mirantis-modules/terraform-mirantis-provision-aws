@@ -28,5 +28,8 @@ module "vpc" {
     stack = var.name
     role  = "vpc"
     unit  = "primary"
-  }, var.tags)
+    },
+    var.tags,
+    var.kube_tags,
+  )
 }
