@@ -30,5 +30,8 @@ module "vpc" {
     stack = var.name
     role  = "vpc"
     unit  = "primary"
-  }, var.network.tags)
+    },
+    var.common_tags,
+    var.network.tags,
+  )
 }

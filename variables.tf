@@ -15,7 +15,7 @@ variable "network" {
     private_subnet_count = number
     enable_nat_gateway   = bool
     enable_vpn_gateway   = bool
-    tags                 = map(string)
+    tags                 = optional(map(string), {})
   })
   default = {
     cidr                 = "172.31.0.0/16"
@@ -42,7 +42,7 @@ variable "nodegroups" {
     public                = bool
     user_data             = string
     instance_profile_name = optional(string)
-    tags                  = map(string)
+    tags                  = optional(map(string), {})
   }))
   default = {}
 }
@@ -71,7 +71,7 @@ variable "securitygroups" {
       cidr_blocks = list(string)
       self        = bool
     })), [])
-    tags = map(string)
+    tags = optional(map(string), {})
   }))
   default = {}
 }
@@ -89,7 +89,15 @@ variable "ingresses" {
       port_target   = number
       protocol      = string
     }))
-    tags = map(string)
+    tags = optional(map(string), {})
   }))
   default = {}
+}
+
+# === Common ===
+
+variable "common_tags" {
+  description = "Tags that should be applied to all resources created"
+  type        = map(string)
+  default     = {}
 }
