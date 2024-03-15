@@ -15,7 +15,7 @@ module "vpc" {
   cidr = var.network.cidr
 
   azs             = local.az_subsets
-  public_subnets  = [for i in range(var.network.public_subnet_count) : cidrsubnet(var.cidr, 4, i)]
+  public_subnets  = [for i in range(var.network.public_subnet_count) : cidrsubnet(var.network.cidr, 4, i)]
   private_subnets = [for i in range(var.network.public_subnet_count, var.network.private_subnet_count + var.network.public_subnet_count) : cidrsubnet(var.network.cidr, 4, i)]
 
   enable_nat_gateway = var.network.enable_nat_gateway
