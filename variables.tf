@@ -5,26 +5,31 @@ variable "name" {
 }
 
 # ===  Networking ===
-
-
 variable "network" {
   description = "Network configuration"
   type = object({
-    cidr                 = string
-    public_subnet_count  = number
-    private_subnet_count = number
-    enable_nat_gateway   = bool
-    enable_vpn_gateway   = bool
-    tags                 = optional(map(string), {})
+    enable_nat_gateway = bool
+    enable_vpn_gateway = bool
+    cidr               = string
+    tags               = optional(map(string), {})
   })
   default = {
-    cidr                 = "172.31.0.0/16"
-    public_subnet_count  = 3
-    private_subnet_count = 0
-    enable_nat_gateway   = false
-    enable_vpn_gateway   = false
-    tags                 = {}
+    enable_nat_gateway = false
+    enable_vpn_gateway = false
+    cidr               = "172.31.0.0/16"
+    tags               = {}
   }
+}
+
+# === subnets ===
+variable "subnets" {
+  description = "The subnets configuration"
+  type = map(object({
+    cidr       = string
+    nodegroups = list(string)
+    private    = bool
+  }))
+  default = {}
 }
 
 # === Machines ===
