@@ -1,4 +1,27 @@
 
+
+locals {
+  vpc_subnets_to_ngs = { for k, v in var.nodegroups : k => [for pk, pv in var.subnets : pv.cidr if contains(pv.nodegroups, k)] }
+}
+
+data "aws_subnets" "all" {
+  depends_on = [module.vpc]
+  filter {
+    name   = "vpc-id"
+    values = [module.vpc.vpc_id]
+  }
+}
+
+data "aws_subnet" "all" {
+  count = length(var.subnets)
+  id    = data.aws_subnets.all.ids[count.index]
+}
+
+locals {
+  map_subnets_to_ngs = { for k, ngv in local.vpc_subnets_to_ngs : k => flatten([for dps in data.aws_subnet.all : dps.id if contains(ngv, dps.cidr_block)]) }
+}
+
+
 module "nodegroups" {
   for_each = var.nodegroups
 
@@ -15,7 +38,7 @@ module "nodegroups" {
   key_pair              = each.value.keypair_id
   instance_profile_name = each.value.instance_profile_name
 
-  subnets         = module.vpc.public_subnets                                                                # TODO: right how we only support public nodes :(
+  subnets         = local.map_subnets_to_ngs[each.key]
   security_groups = [for k, sg in local.securitygroups_with_sg : sg.id if contains(sg.nodegroups, each.key)] # attach any sgs listed for this nodegroup
 
   tags = merge({

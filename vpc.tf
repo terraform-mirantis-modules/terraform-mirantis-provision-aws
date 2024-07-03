@@ -5,7 +5,11 @@ data "aws_availability_zones" "available" {
 
 locals {
   // try to get as many azs as needed to stripe subnets across them.
-  az_subsets = slice(data.aws_availability_zones.available.names, 0, var.network.public_subnet_count)
+  az_subsets = slice(data.aws_availability_zones.available.names, 0, length(var.subnets))
+}
+
+output "cidr" {
+  value = [for sk, sv in var.subnets : sv.cidr]
 }
 
 module "vpc" {
@@ -14,8 +18,9 @@ module "vpc" {
   name = var.name
   cidr = var.network.cidr
 
-  azs            = local.az_subsets
-  public_subnets = [for i in range(var.network.public_subnet_count) : cidrsubnet(var.network.cidr, 4, i)]
+  azs             = local.az_subsets
+  public_subnets  = [for sk, sv in var.subnets : sv.cidr if sv.private == false]
+  private_subnets = [for sk, sv in var.subnets : sv.cidr if sv.private == true]
 
   enable_nat_gateway = var.network.enable_nat_gateway
   enable_vpn_gateway = var.network.enable_vpn_gateway
