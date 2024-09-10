@@ -27,7 +27,7 @@ subnets = {
   }
   "AWorkers" = {
     cidr       = "172.31.128.0/17"
-    nodegroups = ["AWrk_Ubu22", "AWrk_Windows2019"]
+    nodegroups = ["AWrk_Ubu22"]
     private    = false
   }
 }
