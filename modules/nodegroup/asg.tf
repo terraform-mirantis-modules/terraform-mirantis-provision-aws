@@ -14,7 +14,7 @@ module "mg" {
   vpc_zone_identifier = var.subnets
   security_groups     = var.security_groups
 
-  image_id          = var.ami
+  image_id          = var.source_image.ami
   instance_type     = var.type
   ebs_optimized     = true
   enable_monitoring = true

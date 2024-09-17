@@ -4,9 +4,11 @@ variable "name" {
   type        = string
 }
 
-variable "ami" {
-  description = "Image AMI ID"
-  type        = string
+variable "source_image" {
+  description = "The source image to use for the machine"
+  type = object({
+    ami = string
+  })
 }
 
 variable "type" {

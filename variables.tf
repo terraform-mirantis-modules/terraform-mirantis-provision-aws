@@ -37,7 +37,9 @@ variable "subnets" {
 variable "nodegroups" {
   description = "A map of machine group definitions"
   type = map(object({
-    ami                   = string
+    source_image = object({
+      ami = string
+    })
     keypair_id            = string
     type                  = string
     count                 = number
