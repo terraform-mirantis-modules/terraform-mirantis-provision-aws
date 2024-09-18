@@ -29,7 +29,7 @@ module "nodegroups" {
 
   name = "${var.name}-${each.key}"
 
-  ami                   = each.value.ami
+  source_image          = each.value.source_image
   type                  = each.value.type
   node_count            = each.value.count
   root_device_name      = each.value.root_device_name
