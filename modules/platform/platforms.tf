@@ -274,8 +274,16 @@ locals {
       "ssh_user" : "ec2-user",
       "ssh_port" : 22
     },
+    "rhel_9.4" : {
+      "ami_name" : "RHEL-9.4*HVM-202?????-x86_64-*-Hourly2-GP?",
+      "owner" : "309956199498",
+      "interface" : "eth0"
+      "connection" : "ssh",
+      "ssh_user" : "ec2-user",
+      "ssh_port" : 22
+    },
     "rhel_9" : {
-      "ami_name" : "RHEL-9.3*HVM-202?????-x86_64-*-Hourly2-GP?",
+      "ami_name" : "RHEL-9.4*HVM-202?????-x86_64-*-Hourly2-GP?",
       "owner" : "309956199498",
       "interface" : "eth0"
       "connection" : "ssh",
