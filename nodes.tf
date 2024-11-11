@@ -1,7 +1,10 @@
 
 
 locals {
-  vpc_subnets_to_ngs = { for k, v in var.nodegroups : k => [for pk, pv in var.subnets : pv.cidr if contains(pv.nodegroups, k)] }
+  // collect subnets per nodegroup where the nodegroup name matches at least one of the subnet nodegroup names, inclusing some wildcard and regex options.
+  // @NOTE try() around the regex avoids errors if the subnet nodegroup is not a valid regex pattern.
+  vpc_subnets_to_ngs = { for nk, ng in var.nodegroups : nk => [for sk, s in var.subnets : s.cidr if length([for sng in s.nodegroups : sng if sng == "*" || sng == nk || try(length(regexall(sng, nk)) > 0, false)]) > 0] }
+
 }
 
 data "aws_subnets" "all" {
