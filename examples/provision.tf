@@ -1,3 +1,9 @@
+
+// example of templatefile usage to generate user_data
+# locals {
+#   user_data = templatefile("${path.module}/example.tpl", { cloudconfig = ["test_var1"] })
+# }
+
 // locals calculated before the provision run
 locals {
   // combine the nodegroup definition with the platform data

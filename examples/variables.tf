@@ -48,7 +48,7 @@ variable "nodegroups" {
     volume_size = number
     role        = string
     public      = bool
-    user_data   = string
+    user_data   = optional(string)
   }))
 }
 

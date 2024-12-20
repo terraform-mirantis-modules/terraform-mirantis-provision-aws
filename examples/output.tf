@@ -15,4 +15,3 @@ output "platforms" {
   value       = local.platforms_with_ami
   sensitive   = true
 }
-

@@ -49,7 +49,10 @@ nodegroups = {
     volume_size = 100
     role        = "manager"
     public      = true
-    user_data   = ""
+    user_data   = <<-EOF
+                    #!/bin/bash
+                    echo "Hello, World!" > /tmp/hello.txt
+                  EOF
   },
   "AWrk_Ubu22" = { // workers for A group
     platform    = "ubuntu_22.04"
