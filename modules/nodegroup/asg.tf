@@ -1,4 +1,3 @@
-
 module "mg" {
   source = "terraform-aws-modules/autoscaling/aws"
 

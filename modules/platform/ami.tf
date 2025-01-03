@@ -1,8 +1,4 @@
 locals {
-  user_data_windows = templatefile("${path.module}/userdata_windows.tpl", {
-    windows_administrator_password = var.windows_password
-  })
-
   platform = local.lib_platform_definitions[var.platform_key]
 }
 
@@ -25,6 +21,6 @@ locals {
   platform_with_ami = merge(
     local.platform,
     data.aws_ami.ami,
-    { key : var.platform_key, ami : data.aws_ami.ami.id, user_data : data.aws_ami.ami.platform == "windows" ? local.user_data_windows : "" } // THIS DOES NOT WORK
+    { key : var.platform_key, ami : data.aws_ami.ami.id }
   )
 }
