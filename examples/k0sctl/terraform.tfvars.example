@@ -1,0 +1,50 @@
+// Stack name — used to label all provisioned resources (CHANGE THIS).
+name = "k0s-test"
+
+aws = {
+  region = "us-east-1"
+}
+
+k0sctl = {
+  k0s_version = "v1.30.2+k0s.0"
+}
+
+network = {
+  cidr               = "172.31.0.0/16"
+  enable_vpn_gateway = false
+  enable_nat_gateway = false
+}
+
+subnets = {
+  "controllers" = {
+    cidr       = "172.31.0.0/17"
+    nodegroups = ["ctrl"]
+    private    = false
+  }
+  "workers" = {
+    cidr       = "172.31.128.0/17"
+    nodegroups = ["wrk"]
+    private    = false
+  }
+}
+
+nodegroups = {
+  "ctrl" = {
+    platform    = "ubuntu_22.04"
+    count       = 1
+    type        = "m6a.xlarge"
+    volume_size = 50
+    role        = "controller"
+    public      = true
+    user_data   = ""
+  }
+  "wrk" = {
+    platform    = "ubuntu_22.04"
+    count       = 2
+    type        = "c6a.xlarge"
+    volume_size = 50
+    role        = "worker"
+    public      = true
+    user_data   = ""
+  }
+}
