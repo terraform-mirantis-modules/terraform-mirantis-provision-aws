@@ -2,15 +2,15 @@
 locals {
 
   // role for MSR machines, so that we can detect if msr config is needed
-  launchpad_role_msr = "msr"
+  mke_role_msr = "msr"
   // only hosts with these roles will be used for launchpad_yaml
-  launchpad_roles = ["manager", "worker", local.launchpad_role_msr]
+  mke_roles = ["manager", "worker", local.mke_role_msr]
 
 }
 
-// Launchpad configuration
-variable "launchpad" {
-  description = "launchpad install configuration"
+// MKE cluster configuration
+variable "mke" {
+  description = "MKE cluster install configuration"
   type = object({
     drain = bool
 
@@ -29,7 +29,7 @@ variable "launchpad" {
 // locals calculated before the provision run
 locals {
   // standard MKE ingresses
-  launchpad_ingresses = {
+  mke_ingresses = {
     "mke" = {
       description = "MKE ingress for UI and Kube"
       nodegroups  = [for k, ng in var.nodegroups : k if ng.role == "manager"]
@@ -50,7 +50,7 @@ locals {
   }
 
   // standard MCR/MKE/MSR firewall rules [here we just leave it open until we can figure this out]
-  launchpad_securitygroups = {
+  mke_securitygroups = {
     "permissive" = {
       description = "Common SG for all cluster machines"
       nodegroups  = [for n, ng in var.nodegroups : n]
@@ -87,13 +87,13 @@ locals {
 
 }
 
-// prepare values to make it easier to feed into launchpad
+// prepare values to make it easier to feed into cluster install tools
 locals {
   // The SAN URL for the MKE load balancer ingress that is for the MKE load balancer
   MKE_URL = module.provision.ingresses["mke"].lb_dns
 
   // flatten nodegroups into a set of objects with the info needed for each node, by combining the group details with the node detains
-  launchpad_hosts_ssh = merge([for k, ng in local.nodegroups : { for l, ngn in ng.nodes : ngn.label => {
+  hosts_ssh = merge([for k, ng in local.nodegroups : { for l, ngn in ng.nodes : ngn.label => {
     label : ngn.label
     role : ng.role
 
@@ -103,8 +103,8 @@ locals {
     ssh_user : ng.ssh_user
     ssh_port : ng.ssh_port
     ssh_key_path : abspath(local_sensitive_file.ssh_private_key.filename)
-  } if contains(local.launchpad_roles, ng.role) && ng.connection == "ssh" }]...)
-  launchpad_hosts_winrm = merge([for k, ng in local.nodegroups : { for l, ngn in ng.nodes : ngn.label => {
+  } if contains(local.mke_roles, ng.role) && ng.connection == "ssh" }]...)
+  hosts_winrm = merge([for k, ng in local.nodegroups : { for l, ngn in ng.nodes : ngn.label => {
     label : ngn.label
     role : ng.role
 
@@ -115,10 +115,10 @@ locals {
     winrm_password : var.windows_password
     winrm_useHTTPS : ng.winrm_useHTTPS
     winrm_insecure : ng.winrm_insecure
-  } if contains(local.launchpad_roles, ng.role) && ng.connection == "winrm" }]...)
+  } if contains(local.mke_roles, ng.role) && ng.connection == "winrm" }]...)
 
   // decide if we need msr configuration (the [0] is needed to prevent an error of no msr instances exit)
-  has_msr = sum(concat([0], [for k, ng in local.nodegroups : ng.count if ng.role == local.launchpad_role_msr])) > 0
+  has_msr = sum(concat([0], [for k, ng in local.nodegroups : ng.count if ng.role == local.mke_role_msr])) > 0
 }
 
 // ------- Ye old launchpad yaml (just for debugging)
@@ -133,7 +133,7 @@ spec:
   cluster:
     prune: false
   hosts:
-%{~for h in local.launchpad_hosts_ssh}
+%{~for h in local.hosts_ssh}
   # ${h.label} (ssh)
   - role: ${h.role}
     ssh:
@@ -141,7 +141,7 @@ spec:
       user: ${h.ssh_user}
       keyPath: ${h.ssh_key_path}
 %{~endfor}
-%{~for h in local.launchpad_hosts_winrm}
+%{~for h in local.hosts_winrm}
   # ${h.label} (winrm)
   - role: ${h.role}
     winRM:
@@ -152,10 +152,10 @@ spec:
       insecure: ${h.winrm_insecure}
 %{~endfor}
   mke:
-    version: ${var.launchpad.mke_version}
+    version: ${var.mke.mke_version}
     imageRepo: docker.io/mirantis
-    adminUsername: ${var.launchpad.mke_connect.username}
-    adminPassword: ${var.launchpad.mke_connect.password}
+    adminUsername: ${var.mke.mke_connect.username}
+    adminPassword: ${var.mke.mke_connect.password}
     installFlags: 
     - "--san=${local.MKE_URL}"
     - "--default-node-orchestrator=kubernetes"
@@ -164,7 +164,7 @@ spec:
     - "--force-recent-backup"
     - "--force-minimums"
   mcr:
-    version: ${var.launchpad.mcr_version}
+    version: ${var.mke.mcr_version}
     repoURL: https://repos.mirantis.com
     installURLLinux: https://get.mirantis.com/
     installURLWindows: https://get.mirantis.com/install.ps1
@@ -172,7 +172,7 @@ spec:
     prune: true
 %{if local.has_msr}
   msr:
-    version: ${var.launchpad.msr_version}
+    version: ${var.mke.msr_version}
     imageRepo: docker.io/mirantis
     "replicaIDs": "sequential"
     installFlags:
@@ -193,8 +193,46 @@ output "mke_connect" {
   sensitive   = true
   value = {
     host     = local.MKE_URL
-    username = var.launchpad.mke_connect.username
-    password = var.launchpad.mke_connect.password
-    insecure = var.launchpad.mke_connect.insecure
+    username = var.mke.mke_connect.username
+    password = var.mke.mke_connect.password
+    insecure = var.mke.mke_connect.insecure
   }
+}
+
+
+// Ansible inventory for bootc-mke3 playbooks.
+// Retrieve with: terraform output -raw bootc_ansible_output > inventory.yaml
+output "bootc_ansible_output" {
+  description = "Ansible inventory YAML compatible with bootc-mke3 playbooks. Retrieve with: terraform output -raw bootc_ansible_output > inventory.yaml"
+  sensitive   = true
+  value = yamlencode({
+    all = {
+      hosts = {
+        for label, h in local.hosts_ssh : label => {
+          ansible_connection           = "ssh"
+          ansible_ssh_private_key_file = h.ssh_key_path
+          ansible_user                 = h.ssh_user
+          ansible_host                 = h.ssh_address
+          ansible_port                 = h.ssh_port
+        }
+      }
+      children = {
+        managers = {
+          hosts = {
+            for label, h in local.hosts_ssh : label => null
+            if h.role == "manager"
+          }
+        }
+        workers = {
+          hosts = {
+            for label, h in local.hosts_ssh : label => null
+            if h.role == "worker"
+          }
+        }
+      }
+      vars = {
+        mke_url = local.MKE_URL
+      }
+    }
+  })
 }

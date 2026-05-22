@@ -3,7 +3,7 @@
 #
 
 module "key" {
-  source = "../modules/key/ed25519"
+  source = "../../modules/key/ed25519"
 
   name = "${var.name}-common"
   tags = local.tags

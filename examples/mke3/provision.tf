@@ -12,7 +12,7 @@ locals {
 
 # PROVISION MACHINES/NETWORK
 module "provision" {
-  source = "../"
+  source = "../../"
 
   name        = var.name
   common_tags = local.tags
@@ -36,15 +36,15 @@ module "provision" {
   } }
 
   // ingress/lb (should likely merge with an input to allow more flexibility
-  ingresses = local.launchpad_ingresses # see launchpad.tf
+  ingresses = local.mke_ingresses # see mke.tf
 
   // firewall rules (should likely merge with an input to allow more flexibility
-  securitygroups = local.launchpad_securitygroups # see launchpad.tf
+  securitygroups = local.mke_securitygroups # see mke.tf
 }
 
-// locals calculated after the provision module is run, but before installation using launchpad
+// locals calculated after the provision module is run, but before cluster installation
 locals {
   // combine each node-group & platform definition with the provisioned nodes
   nodegroups = { for k, ngp in local.nodegroups_wplatform : k => merge({ "name" : k }, ngp, module.provision.nodegroups[k]) }
-  ingresses  = { for k, i in local.launchpad_ingresses : k => merge({ "name" : k }, i, module.provision.ingresses[k]) }
+  ingresses  = { for k, i in local.mke_ingresses : k => merge({ "name" : k }, i, module.provision.ingresses[k]) }
 }

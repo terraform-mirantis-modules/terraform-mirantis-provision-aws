@@ -5,7 +5,7 @@ aws = {
 }
 
 // Set the username/password accordingly
-launchpad = {
+mke = {
   drain = false
 
   mcr_version = "23.0.12"
