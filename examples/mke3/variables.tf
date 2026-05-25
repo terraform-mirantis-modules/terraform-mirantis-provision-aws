@@ -69,3 +69,26 @@ variable "ssh_pk_location" {
   type        = string
   default     = ""
 }
+
+
+variable "is_bootc_based" {
+  description = "If true, inject cloud-init user-data that configures cloud-user with sudo and docker group access using the stack SSH public key."
+  type        = bool
+  default     = false
+}
+
+variable "extra_platforms" {
+  description = "Additional platform definitions merged with the built-in library. Use this to register custom or private AMIs without modifying the platform module."
+  type = map(object({
+    ami_name       = string
+    owner          = string
+    interface      = string
+    connection     = string
+    ssh_user       = optional(string)
+    ssh_port       = optional(number)
+    winrm_user     = optional(string)
+    winrm_useHTTPS = optional(bool)
+    winrm_insecure = optional(bool)
+  }))
+  default = {}
+}

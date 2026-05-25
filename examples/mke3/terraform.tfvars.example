@@ -67,3 +67,16 @@ nodegroups = {
 
 // set a windows password, if you have windows nodes
 # windows_password = ""
+
+// define custom or private AMIs without modifying the platform module
+// the key is used as the platform name in nodegroups[*].platform
+# extra_platforms = {
+#   "my-bootc-image" = {
+#     ami_name   = "my-bootc-image-name-*"
+#     owner      = "123456789012"  // your AWS account ID
+#     interface  = "eth0"
+#     connection = "ssh"
+#     ssh_user   = "cloud-user"
+#     ssh_port   = 22
+#   }
+# }

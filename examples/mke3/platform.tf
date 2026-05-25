@@ -13,6 +13,7 @@ module "platform" {
 
   platform_key     = local.unique_used_platforms[count.index]
   windows_password = var.windows_password
+  extra_platforms  = var.extra_platforms
 }
 
 // variables calculated after ami data is pulled

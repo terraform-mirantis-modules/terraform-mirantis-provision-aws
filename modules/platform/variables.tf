@@ -10,3 +10,20 @@ variable "windows_password" {
   sensitive   = true
   default     = ""
 }
+
+
+variable "extra_platforms" {
+  description = "Additional platform definitions merged with the built-in library. Caller-supplied keys override built-ins on collision."
+  type = map(object({
+    ami_name       = string
+    owner          = string
+    interface      = string
+    connection     = string
+    ssh_user       = optional(string)
+    ssh_port       = optional(number)
+    winrm_user     = optional(string)
+    winrm_useHTTPS = optional(bool)
+    winrm_insecure = optional(bool)
+  }))
+  default = {}
+}

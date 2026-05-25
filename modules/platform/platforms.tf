@@ -567,6 +567,6 @@ locals {
       "winrm_user" : "Administrator",
       "winrm_useHTTPS" : true
       "winrm_insecure" : true
-    }
+    },
   }
 }

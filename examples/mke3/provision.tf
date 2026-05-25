@@ -1,8 +1,10 @@
 
-// example of templatefile usage to generate user_data
-# locals {
-#   user_data = templatefile("${path.module}/example.tpl", { cloudconfig = ["test_var1"] })
-# }
+// cloud-init user-data for bootc-based nodes; empty string when is_bootc_based is false
+locals {
+  bootc_userdata = var.is_bootc_based ? templatefile("${path.module}/bootc_userdata.tpl", {
+    public_key = module.key.public_key
+  }) : ""
+}
 
 // locals calculated before the provision run
 locals {
@@ -32,7 +34,7 @@ module "provision" {
     volume_size : ngd.volume_size
     role : ngd.role
     public : ngd.public
-    user_data : ngd.user_data
+    user_data : var.is_bootc_based ? local.bootc_userdata : ngd.user_data
   } }
 
   // ingress/lb (should likely merge with an input to allow more flexibility

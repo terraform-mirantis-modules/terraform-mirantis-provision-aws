@@ -1,5 +1,6 @@
 locals {
-  platform = local.lib_platform_definitions[var.platform_key]
+  // look up in caller-supplied extra_platforms first, fall back to built-in library
+  platform = try(var.extra_platforms[var.platform_key], local.lib_platform_definitions[var.platform_key])
 }
 
 data "aws_ami" "ami" {
