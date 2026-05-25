@@ -1,0 +1,55 @@
+// Stack name used to label all resources (CHANGE THIS)
+name = "mystack"
+
+aws = {
+  region = "us-east-1"
+}
+
+network = {
+  cidr               = "172.31.0.0/16"
+  enable_vpn_gateway = false
+  enable_nat_gateway = false
+}
+
+subnets = {
+  "main" = {
+    cidr       = "172.31.0.0/17"
+    nodegroups = ["managers"]
+    private    = false
+  }
+  "workers" = {
+    cidr       = "172.31.128.0/17"
+    nodegroups = ["workers"]
+    private    = false
+  }
+}
+
+// Each nodegroup selects its AMI by name filter + owner rather than a
+// hardcoded ID, so the most recent matching image is always resolved.
+//
+// Rocky Linux 9 AMIs are published by RESF (owner 792107900699).
+// See: https://rockylinux.org/cloud-images
+nodegroups = {
+  "managers" = {
+    ami_name  = "Rocky-9-EC2-Base-9.*x86_64*"
+    ami_owner = "792107900699"
+    ssh_user  = "rocky"
+    count       = 1
+    type        = "m6a.2xlarge"
+    volume_size = 100
+    role        = "manager"
+    public      = true
+    user_data   = ""
+  }
+  "workers" = {
+    ami_name  = "Rocky-9-EC2-Base-9.*x86_64*"
+    ami_owner = "792107900699"
+    ssh_user  = "rocky"
+    count       = 2
+    type        = "c6a.xlarge"
+    volume_size = 100
+    role        = "worker"
+    public      = true
+    user_data   = ""
+  }
+}
