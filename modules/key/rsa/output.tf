@@ -1,3 +1,4 @@
+
 output "keypair_id" {
   description = "AWS EC2 key-pair id"
   value       = aws_key_pair.keypair.id

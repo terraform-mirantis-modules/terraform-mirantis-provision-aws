@@ -1,3 +1,4 @@
+
 resource "tls_private_key" "rsa" {
   algorithm = "RSA"
   rsa_bits  = var.rsa_bits
