@@ -7,16 +7,24 @@ locals {
 
 // locals calculated before the provision run
 locals {
-  // combine nodegroup definitions with AMI lookup results
-  nodegroups_with_ami = { for k, ngd in var.nodegroups : k => merge({
-    // WinRM defaults for non-Windows nodes
-    winrm_user     = ""
-    winrm_useHTTPS = false
-    winrm_insecure = false
-  }, ngd, {
-    ami              = data.aws_ami.nodegroup[k].id
-    root_device_name = data.aws_ami.nodegroup[k].root_device_name
-  }) }
+  // resolve each nodegroup to a common shape regardless of AMI source:
+  //   - platform path: merge nodegroup with platform data (provides ami, root_device_name, ssh_user, connection, etc.)
+  //   - ami_id path:   merge nodegroup with data source results (provides ami, root_device_name)
+  nodegroups_resolved = { for k, ngd in var.nodegroups : k => ngd.platform != null
+    ? merge({
+        winrm_user     = ""
+        winrm_useHTTPS = false
+        winrm_insecure = false
+      }, ngd, local.platforms_with_ami[ngd.platform])
+    : merge({
+        winrm_user     = ""
+        winrm_useHTTPS = false
+        winrm_insecure = false
+      }, ngd, {
+        ami              = data.aws_ami.nodegroup[k].id
+        root_device_name = data.aws_ami.nodegroup[k].root_device_name
+      })
+  }
 }
 
 # PROVISION MACHINES/NETWORK
@@ -29,8 +37,7 @@ module "provision" {
 
   subnets = var.subnets
 
-  // pass nodegroups with resolved AMI and root device name
-  nodegroups = { for k, ngd in local.nodegroups_with_ami : k => {
+  nodegroups = { for k, ngd in local.nodegroups_resolved : k => {
     source_image : {
       ami : ngd.ami
     }
@@ -54,6 +61,6 @@ module "provision" {
 // locals calculated after the provision module is run, but before cluster installation
 locals {
   // combine each node-group definition with the provisioned nodes
-  nodegroups = { for k, ngp in local.nodegroups_with_ami : k => merge({ "name" : k }, ngp, module.provision.nodegroups[k]) }
+  nodegroups = { for k, ngp in local.nodegroups_resolved : k => merge({ "name" : k }, ngp, module.provision.nodegroups[k]) }
   ingresses  = { for k, i in local.mke_ingresses : k => merge({ "name" : k }, i, module.provision.ingresses[k]) }
 }

@@ -1,7 +1,7 @@
-// Look up each nodegroup's AMI by its known ID to retrieve metadata
-// (root_device_name) without requiring the caller to supply it manually.
+// Look up AMIs for nodegroups that specify ami_id directly.
+// Filtered to only those entries so platform-based nodegroups are unaffected.
 data "aws_ami" "nodegroup" {
-  for_each = var.nodegroups
+  for_each = { for k, ng in var.nodegroups : k => ng if ng.ami_id != null }
 
   most_recent = true
   owners      = [each.value.ami_owner]
