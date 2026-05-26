@@ -1,4 +1,3 @@
-
 // cloud-init user-data for bootc-based nodes; empty string when is_bootc_based is false
 locals {
   bootc_userdata = var.is_bootc_based ? templatefile("${path.module}/bootc_userdata.tpl", {
@@ -8,8 +7,16 @@ locals {
 
 // locals calculated before the provision run
 locals {
-  // combine the nodegroup definition with the platform data
-  nodegroups_wplatform = { for k, ngd in var.nodegroups : k => merge(ngd, local.platforms_with_ami[ngd.platform]) }
+  // combine nodegroup definitions with AMI lookup results
+  nodegroups_with_ami = { for k, ngd in var.nodegroups : k => merge({
+    // WinRM defaults for non-Windows nodes
+    winrm_user     = ""
+    winrm_useHTTPS = false
+    winrm_insecure = false
+  }, ngd, {
+    ami              = data.aws_ami.nodegroup[k].id
+    root_device_name = data.aws_ami.nodegroup[k].root_device_name
+  }) }
 }
 
 # PROVISION MACHINES/NETWORK
@@ -22,8 +29,8 @@ module "provision" {
 
   subnets = var.subnets
 
-  // pass in a mix of nodegroups with the platform information
-  nodegroups = { for k, ngd in local.nodegroups_wplatform : k => {
+  // pass nodegroups with resolved AMI and root device name
+  nodegroups = { for k, ngd in local.nodegroups_with_ami : k => {
     source_image : {
       ami : ngd.ami
     }
@@ -46,7 +53,7 @@ module "provision" {
 
 // locals calculated after the provision module is run, but before cluster installation
 locals {
-  // combine each node-group & platform definition with the provisioned nodes
-  nodegroups = { for k, ngp in local.nodegroups_wplatform : k => merge({ "name" : k }, ngp, module.provision.nodegroups[k]) }
+  // combine each node-group definition with the provisioned nodes
+  nodegroups = { for k, ngp in local.nodegroups_with_ami : k => merge({ "name" : k }, ngp, module.provision.nodegroups[k]) }
   ingresses  = { for k, i in local.mke_ingresses : k => merge({ "name" : k }, i, module.provision.ingresses[k]) }
 }

@@ -42,13 +42,17 @@ variable "subnets" {
 variable "nodegroups" {
   description = "A map of machine group definitions"
   type = map(object({
-    platform    = string
+    ami_id      = string
+    ami_owner   = string
+    ssh_user    = string
+    ssh_port    = optional(number, 22)
+    connection  = optional(string, "ssh")
     type        = string
     count       = number
     volume_size = number
     role        = string
     public      = bool
-    user_data   = optional(string)
+    user_data   = optional(string, "")
   }))
 }
 
@@ -75,20 +79,4 @@ variable "is_bootc_based" {
   description = "If true, inject cloud-init user-data that configures cloud-user with sudo and docker group access using the stack SSH public key."
   type        = bool
   default     = false
-}
-
-variable "extra_platforms" {
-  description = "Additional platform definitions merged with the built-in library. Use this to register custom or private AMIs without modifying the platform module."
-  type = map(object({
-    ami_name       = string
-    owner          = string
-    interface      = string
-    connection     = string
-    ssh_user       = optional(string)
-    ssh_port       = optional(number)
-    winrm_user     = optional(string)
-    winrm_useHTTPS = optional(bool)
-    winrm_insecure = optional(bool)
-  }))
-  default = {}
 }

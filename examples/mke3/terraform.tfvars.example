@@ -27,7 +27,7 @@ subnets = {
   }
   "AWorkers" = {
     cidr       = "172.31.128.0/17"
-    nodegroups = ["AWrk_Ubu22"]
+    nodegroups = ["AWrk"]
     private    = false
   }
 }
@@ -43,19 +43,20 @@ network = {
 // one definition for each group of machines to include in the stack
 nodegroups = {
   "AMngr" = { // managers for A group
-    platform    = "rhel_9.3"
+    ami_id      = "ami-xxxxxxxxxxxxxxxxx" // your AMI ID
+    ami_owner   = "123456789012"          // your AWS account ID
+    ssh_user    = "cloud-user"
     count       = 1
     type        = "m6a.2xlarge"
     volume_size = 100
     role        = "manager"
     public      = true
-    user_data   = <<-EOF
-                    #!/bin/bash
-                    echo "Hello, World!" > /tmp/hello.txt
-                  EOF
+    user_data   = ""
   },
-  "AWrk_Ubu22" = { // workers for A group
-    platform    = "ubuntu_22.04"
+  "AWrk" = { // workers for A group
+    ami_id      = "ami-xxxxxxxxxxxxxxxxx" // your AMI ID
+    ami_owner   = "123456789012"          // your AWS account ID
+    ssh_user    = "cloud-user"
     count       = 1
     type        = "c6a.xlarge"
     volume_size = 100
@@ -67,16 +68,3 @@ nodegroups = {
 
 // set a windows password, if you have windows nodes
 # windows_password = ""
-
-// define custom or private AMIs without modifying the platform module
-// the key is used as the platform name in nodegroups[*].platform
-# extra_platforms = {
-#   "my-bootc-image" = {
-#     ami_name   = "my-bootc-image-name-*"
-#     owner      = "123456789012"  // your AWS account ID
-#     interface  = "eth0"
-#     connection = "ssh"
-#     ssh_user   = "cloud-user"
-#     ssh_port   = 22
-#   }
-# }
