@@ -298,6 +298,30 @@ locals {
       "ssh_user" : "ec2-user",
       "ssh_port" : 22
     },
+ "rhel_10.0" : {
+      "ami_name" : "RHEL-10.0.0_HVM-202?????-x86_64-*-Hourly2-GP3",
+      "owner" : "309956199498",
+      "interface" : "eth0"
+      "connection" : "ssh",
+      "ssh_user" : "ec2-user",
+      "ssh_port" : 22
+    },
+    "rhel_10.1" : {
+      "ami_name" : "RHEL-10.1.0_HVM-202?????-x86_64-*-Hourly2-GP3",
+      "owner" : "309956199498",
+      "interface" : "eth0"
+      "connection" : "ssh",
+      "ssh_user" : "ec2-user",
+      "ssh_port" : 22
+    },
+    "rhel_10" : {
+      "ami_name" : "RHEL-10.*_HVM-202?????-x86_64-*-Hourly2-GP3",
+      "owner" : "309956199498",
+      "interface" : "eth0"
+      "connection" : "ssh",
+      "ssh_user" : "ec2-user",
+      "ssh_port" : 22
+    },
     "rocky_8.5" : {
       "ami_name" : "Rocky-8-EC2-8.5-*.x86_64",
       "owner" : "792107900819",
@@ -380,6 +404,30 @@ locals {
     },
     "rocky_9" : {
       "ami_name" : "Rocky-9-EC2-Base-9.*.x86_64",
+      "owner" : "792107900819",
+      "interface" : "eth0"
+      "connection" : "ssh",
+      "ssh_user" : "rocky",
+      "ssh_port" : 22
+    },
+    "rocky_10.0" : {
+      "ami_name" : "Rocky-10-EC2-LVM-10.0-*.x86_64",
+      "owner" : "792107900819",
+      "interface" : "eth0"
+      "connection" : "ssh",
+      "ssh_user" : "rocky",
+      "ssh_port" : 22
+    },
+    "rocky_10.1" : {
+      "ami_name" : "Rocky-10-EC2-Base-10.1-*.x86_64",
+      "owner" : "792107900819",
+      "interface" : "eth0"
+      "connection" : "ssh",
+      "ssh_user" : "rocky",
+      "ssh_port" : 22
+    },
+    "rocky_10" : {
+      "ami_name" : "Rocky-10-EC2-Base-10.*-*.x86_64",
       "owner" : "792107900819",
       "interface" : "eth0"
       "connection" : "ssh",
@@ -482,6 +530,38 @@ locals {
       "ssh_user" : "ec2-user",
       "ssh_port" : 22
     },
+    "sles_15sp6" : {
+      "ami_name" : "suse-sles-15-sp6-v20??????-hvm-ssd-x86_64",
+      "owner" : "013907871322",
+      "interface" : "eth0"
+      "connection" : "ssh",
+      "ssh_user" : "ec2-user",
+      "ssh_port" : 22
+    },
+    "sles_15_sp6" : {
+      "ami_name" : "suse-sles-15-sp6-v20??????-hvm-ssd-x86_64",
+      "owner" : "013907871322",
+      "interface" : "eth0"
+      "connection" : "ssh",
+      "ssh_user" : "ec2-user",
+      "ssh_port" : 22
+    },
+    "sles_15sp7" : {
+      "ami_name" : "suse-sles-15-sp7-v20??????-hvm-ssd-x86_64",
+      "owner" : "013907871322",
+      "interface" : "eth0"
+      "connection" : "ssh",
+      "ssh_user" : "ec2-user",
+      "ssh_port" : 22
+    },
+    "sles_15_sp7" : {
+      "ami_name" : "suse-sles-15-sp7-v20??????-hvm-ssd-x86_64",
+      "owner" : "013907871322",
+      "interface" : "eth0"
+      "connection" : "ssh",
+      "ssh_user" : "ec2-user",
+      "ssh_port" : 22
+    },
     "ubuntu_16.04" : {
       "ami_name" : "ubuntu/images/hvm-ssd/ubuntu-xenial-16.04-amd64-server-*",
       "owner" : "099720109477",
@@ -508,6 +588,22 @@ locals {
     },
     "ubuntu_22.04" : {
       "ami_name" : "ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*",
+      "owner" : "099720109477",
+      "interface" : "ens5"
+      "connection" : "ssh",
+      "ssh_user" : "ubuntu",
+      "ssh_port" : 22
+    },
+    "ubuntu_24.04" : {
+      "ami_name" : "ubuntu/images/hvm-ssd-gp3/ubuntu-noble-24.04-amd64-server-*",
+      "owner" : "099720109477",
+      "interface" : "ens5"
+      "connection" : "ssh",
+      "ssh_user" : "ubuntu",
+      "ssh_port" : 22
+    },
+    "ubuntu_24" : {
+      "ami_name" : "ubuntu/images/hvm-ssd-gp3/ubuntu-noble-24.04-amd64-server-*",
       "owner" : "099720109477",
       "interface" : "ens5"
       "connection" : "ssh",
@@ -568,5 +664,32 @@ locals {
       "winrm_useHTTPS" : true
       "winrm_insecure" : true
     },
+    "windows_2025" : {
+      "ami_name" : "Windows_Server-2025-English-Core-Base-*",
+      "owner" : "801119661308",
+      "interface" : "Ethernet 3"
+      "connection" : "winrm",
+      "winrm_user" : "Administrator",
+      "winrm_useHTTPS" : true
+      "winrm_insecure" : true
+    },
+    "windows_core_2025" : {
+      "ami_name" : "Windows_Server-2025-English-Core-Base-*",
+      "owner" : "801119661308",
+      "interface" : "Ethernet 3"
+      "connection" : "winrm",
+      "winrm_user" : "Administrator",
+      "winrm_useHTTPS" : true
+      "winrm_insecure" : true
+    },
+    "windows_full_2025" : {
+      "ami_name" : "Windows_Server-2025-English-Full-Base-*",
+      "owner" : "801119661308",
+      "interface" : "Ethernet 3"
+      "connection" : "winrm",
+      "winrm_user" : "Administrator",
+      "winrm_useHTTPS" : true
+      "winrm_insecure" : true
+    }
   }
 }
