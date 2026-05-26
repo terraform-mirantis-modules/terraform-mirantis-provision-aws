@@ -1,6 +1,7 @@
 
 resource "tls_private_key" "rsa" {
   algorithm = "RSA"
+  rsa_bits  = var.rsa_bits
 }
 
 resource "aws_key_pair" "keypair" {
@@ -9,7 +10,7 @@ resource "aws_key_pair" "keypair" {
 
   tags = merge({
     stack     = var.name
-    algorythm = "SRA"
+    algorythm = "RSA"
     role      = "sshkey"
   }, var.tags)
 }
