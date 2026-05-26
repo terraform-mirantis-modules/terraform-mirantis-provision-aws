@@ -40,13 +40,20 @@ variable "subnets" {
 }
 
 variable "nodegroups" {
-  description = "A map of machine group definitions"
+  description = "A map of machine group definitions. Each entry must specify exactly one AMI source: either 'platform' (built-in library lookup) or 'ami_id'+'ami_owner' (direct lookup)."
   type = map(object({
-    ami_id      = string
-    ami_owner   = string
-    ssh_user    = string
-    ssh_port    = optional(number, 22)
-    connection  = optional(string, "ssh")
+    // platform-based AMI selection (mutually exclusive with ami_id)
+    platform = optional(string)
+
+    // direct AMI selection (mutually exclusive with platform)
+    ami_id    = optional(string)
+    ami_owner = optional(string)
+
+    // SSH connection details; required when using ami_id (platform provides these automatically)
+    ssh_user   = optional(string)
+    ssh_port   = optional(number, 22)
+    connection = optional(string, "ssh")
+
     type        = string
     count       = number
     volume_size = number
@@ -54,6 +61,27 @@ variable "nodegroups" {
     public      = bool
     user_data   = optional(string, "")
   }))
+
+  validation {
+    condition = alltrue([
+      for k, ng in var.nodegroups : (ng.platform != null) != (ng.ami_id != null)
+    ])
+    error_message = "Each nodegroup must specify exactly one of 'platform' or 'ami_id', not both and not neither."
+  }
+
+  validation {
+    condition = alltrue([
+      for k, ng in var.nodegroups : ng.ami_id == null || ng.ami_owner != null
+    ])
+    error_message = "'ami_owner' is required when 'ami_id' is set."
+  }
+
+  validation {
+    condition = alltrue([
+      for k, ng in var.nodegroups : ng.ami_id == null || ng.ssh_user != null
+    ])
+    error_message = "'ssh_user' is required when 'ami_id' is set (it cannot be inferred from a platform definition)."
+  }
 }
 
 variable "extra_tags" {

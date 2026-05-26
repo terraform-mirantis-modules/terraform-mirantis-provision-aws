@@ -40,12 +40,13 @@ network = {
   cidr               = "172.31.0.0/16"
 }
 
-// one definition for each group of machines to include in the stack
+// one definition for each group of machines to include in the stack.
+// each nodegroup must use exactly one AMI source:
+//   - platform: resolves the latest matching AMI from the built-in library
+//   - ami_id + ami_owner: pins to a specific AMI you already know
 nodegroups = {
-  "AMngr" = { // managers for A group
-    ami_id      = "ami-xxxxxxxxxxxxxxxxx" // your AMI ID
-    ami_owner   = "123456789012"          // your AWS account ID
-    ssh_user    = "cloud-user"
+  "AMngr" = { // managers — platform-based example
+    platform    = "rhel_9.3"
     count       = 1
     type        = "m6a.2xlarge"
     volume_size = 100
@@ -53,10 +54,10 @@ nodegroups = {
     public      = true
     user_data   = ""
   },
-  "AWrk" = { // workers for A group
-    ami_id      = "ami-xxxxxxxxxxxxxxxxx" // your AMI ID
-    ami_owner   = "123456789012"          // your AWS account ID
-    ssh_user    = "cloud-user"
+  "AWrk" = { // workers — direct AMI ID example
+    ami_id    = "ami-xxxxxxxxxxxxxxxxx" // your AMI ID
+    ami_owner = "123456789012"          // your AWS account ID
+    ssh_user  = "cloud-user"
     count       = 1
     type        = "c6a.xlarge"
     volume_size = 100

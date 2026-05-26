@@ -1,6 +1,6 @@
 
 resource "aws_lb" "this" {
-  name               = "${var.stack}-${var.name}-lb"
+  name               = replace("${var.stack}-${var.name}-lb", "_", "-")
   internal           = false
   load_balancer_type = "network"
 
@@ -16,7 +16,7 @@ resource "aws_lb" "this" {
 resource "aws_lb_target_group" "targets" {
   for_each = var.routes
 
-  name = "${var.stack}-${var.name}-${each.key}"
+  name = substr(replace("${var.stack}-${var.name}-${each.key}", "_", "-"), 0, 32)
 
   vpc_id   = var.vpc_id
   port     = each.value.port_target
