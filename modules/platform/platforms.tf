@@ -610,6 +610,14 @@ locals {
       "ssh_user" : "ubuntu",
       "ssh_port" : 22
     },
+    "ubuntu_22.04_fips" : {
+      "ami_name" : "ubuntu-pro-fips-updates-server/images/hvm-ssd/ubuntu-jammy-22.04-amd64-pro-fips-updates-server-*",
+      "owner" : "099720109477",
+      "interface" : "ens5"
+      "connection" : "ssh",
+      "ssh_user" : "ubuntu",
+      "ssh_port" : 22
+    },
     "windows_2019" : {
       "ami_name" : "Windows_Server-2019-English-Core-Base-*",
       "owner" : "801119661308",
