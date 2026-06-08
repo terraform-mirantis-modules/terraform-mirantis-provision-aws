@@ -41,7 +41,7 @@ locals {
       "ssh_port" : 22
     },
     "rhel_7.9" : {
-      "ami_name" : "RHEL-7.9_HVM*x86_64*Hourly2-GP2",
+      "ami_name" : "RHEL-7.9_HVM-????????-x86_64-*-Hourly2-GP3",
       "owner" : "309956199498",
       "interface" : "eth0"
       "connection" : "ssh",
@@ -192,8 +192,64 @@ locals {
       "ssh_user" : "ec2-user",
       "ssh_port" : 22
     },
+    "rhel_9.6" : {
+      "ami_name" : "RHEL-9.6.0_HVM-20??????-x86_64-*-Hourly2-GP3",
+      "owner" : "309956199498",
+      "interface" : "eth0"
+      "connection" : "ssh",
+      "ssh_user" : "ec2-user",
+      "ssh_port" : 22
+    },
+    "rhel_9.7" : {
+      "ami_name" : "RHEL-9.7.0_HVM-20??????-x86_64-*-Hourly2-GP3",
+      "owner" : "309956199498",
+      "interface" : "eth0"
+      "connection" : "ssh",
+      "ssh_user" : "ec2-user",
+      "ssh_port" : 22
+    },
+    "rhel_9.8" : {
+      "ami_name" : "RHEL-9.8.0_HVM_GA-20??????-x86_64-*-Hourly2-GP3",
+      "owner" : "309956199498",
+      "interface" : "eth0"
+      "connection" : "ssh",
+      "ssh_user" : "ec2-user",
+      "ssh_port" : 22
+    },
     "rhel_9" : {
-      "ami_name" : "RHEL-9.4*HVM-202?????-x86_64-*-Hourly2-GP?",
+      "ami_name" : "RHEL-9.7.0_HVM-20??????-x86_64-*-Hourly2-GP3",
+      "owner" : "309956199498",
+      "interface" : "eth0"
+      "connection" : "ssh",
+      "ssh_user" : "ec2-user",
+      "ssh_port" : 22
+    },
+    "rhel_10.0" : {
+      "ami_name" : "RHEL-10.0.0_HVM-20??????-x86_64-*-Hourly2-GP3",
+      "owner" : "309956199498",
+      "interface" : "eth0"
+      "connection" : "ssh",
+      "ssh_user" : "ec2-user",
+      "ssh_port" : 22
+    },
+    "rhel_10.1" : {
+      "ami_name" : "RHEL-10.1.0_HVM-20??????-x86_64-*-Hourly2-GP3",
+      "owner" : "309956199498",
+      "interface" : "eth0"
+      "connection" : "ssh",
+      "ssh_user" : "ec2-user",
+      "ssh_port" : 22
+    },
+    "rhel_10.2" : {
+      "ami_name" : "RHEL-10.2.0_HVM_GA-20??????-x86_64-*-Hourly2-GP3",
+      "owner" : "309956199498",
+      "interface" : "eth0"
+      "connection" : "ssh",
+      "ssh_user" : "ec2-user",
+      "ssh_port" : 22
+    },
+    "rhel_10" : {
+      "ami_name" : "RHEL-10.2.0_HVM_GA-20??????-x86_64-*-Hourly2-GP3",
       "owner" : "309956199498",
       "interface" : "eth0"
       "connection" : "ssh",
