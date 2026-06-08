@@ -562,6 +562,14 @@ locals {
       "ssh_user" : "ec2-user",
       "ssh_port" : 22
     },
+    "sles_16" : {
+      "ami_name" : "suse-sles-16-0-v20??????-hvm-ssd-x86_64",
+      "owner" : "013907871322",
+      "interface" : "eth0"
+      "connection" : "ssh",
+      "ssh_user" : "ec2-user",
+      "ssh_port" : 22
+    },
     "ubuntu_16.04" : {
       "ami_name" : "ubuntu/images/hvm-ssd/ubuntu-xenial-16.04-amd64-server-*",
       "owner" : "099720109477",
