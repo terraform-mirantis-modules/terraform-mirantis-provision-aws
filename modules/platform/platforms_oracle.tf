@@ -1,3 +1,7 @@
+// WARNING: Owner 131827586825 (Oracle) publishes ZERO AMIs in us-east-1 as of 2026-06.
+// All entries below resolve to 0 AMIs. No first-party Oracle replacement with the OL*-HVM
+// naming scheme is currently available in this region. Entries are retained for reference
+// and for potential use in other regions where Oracle may still publish.
 locals {
   lib_platforms_oracle = {
     "oracle_7" : {

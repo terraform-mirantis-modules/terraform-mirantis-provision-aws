@@ -80,6 +80,30 @@ locals {
       "ssh_user" : "rocky",
       "ssh_port" : 22
     },
+    "rocky_9.5" : {
+      "ami_name" : "Rocky-9-EC2-Base-9.5-*.x86_64",
+      "owner" : "792107900819",
+      "interface" : "eth0"
+      "connection" : "ssh",
+      "ssh_user" : "rocky",
+      "ssh_port" : 22
+    },
+    "rocky_9.6" : {
+      "ami_name" : "Rocky-9-EC2-Base-9.6-*.x86_64",
+      "owner" : "792107900819",
+      "interface" : "eth0"
+      "connection" : "ssh",
+      "ssh_user" : "rocky",
+      "ssh_port" : 22
+    },
+    "rocky_9.7" : {
+      "ami_name" : "Rocky-9-EC2-Base-9.7-*.x86_64",
+      "owner" : "792107900819",
+      "interface" : "eth0"
+      "connection" : "ssh",
+      "ssh_user" : "rocky",
+      "ssh_port" : 22
+    },
     "rocky_9" : {
       "ami_name" : "Rocky-9-EC2-Base-9.*.x86_64",
       "owner" : "792107900819",

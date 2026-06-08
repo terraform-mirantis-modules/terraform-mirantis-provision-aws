@@ -48,5 +48,21 @@ locals {
       "ssh_user" : "ubuntu",
       "ssh_port" : 22
     },
+    "ubuntu_25.10" : {
+      "ami_name" : "ubuntu/images/hvm-ssd-gp3/ubuntu-questing-25.10-amd64-server-*",
+      "owner" : "099720109477",
+      "interface" : "ens5"
+      "connection" : "ssh",
+      "ssh_user" : "ubuntu",
+      "ssh_port" : 22
+    },
+    "ubuntu_26.04" : {
+      "ami_name" : "ubuntu/images/hvm-ssd-gp3/ubuntu-resolute-26.04-amd64-server-*",
+      "owner" : "099720109477",
+      "interface" : "ens5"
+      "connection" : "ssh",
+      "ssh_user" : "ubuntu",
+      "ssh_port" : 22
+    },
   }
 }
