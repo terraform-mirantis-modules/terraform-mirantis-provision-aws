@@ -42,7 +42,7 @@ module "provision" {
 ```
 
 ## Examples
-If you want to see full example, check the [examples folder](./examples).
+If you want to see a full example, check the [mke3 example](./examples/mke3).
 
 ## License
 

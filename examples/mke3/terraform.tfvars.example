@@ -5,7 +5,7 @@ aws = {
 }
 
 // Set the username/password accordingly
-launchpad = {
+mke = {
   drain = false
 
   mcr_version = "23.0.12"
@@ -27,7 +27,7 @@ subnets = {
   }
   "AWorkers" = {
     cidr       = "172.31.128.0/17"
-    nodegroups = ["AWrk_Ubu22"]
+    nodegroups = ["AWrk"]
     private    = false
   }
 }
@@ -40,22 +40,24 @@ network = {
   cidr               = "172.31.0.0/16"
 }
 
-// one definition for each group of machines to include in the stack
+// one definition for each group of machines to include in the stack.
+// each nodegroup must use exactly one AMI source:
+//   - platform: resolves the latest matching AMI from the built-in library
+//   - ami_id + ami_owner: pins to a specific AMI you already know
 nodegroups = {
-  "AMngr" = { // managers for A group
+  "AMngr" = { // managers — platform-based example
     platform    = "rhel_9.3"
     count       = 1
     type        = "m6a.2xlarge"
     volume_size = 100
     role        = "manager"
     public      = true
-    user_data   = <<-EOF
-                    #!/bin/bash
-                    echo "Hello, World!" > /tmp/hello.txt
-                  EOF
+    user_data   = ""
   },
-  "AWrk_Ubu22" = { // workers for A group
-    platform    = "ubuntu_22.04"
+  "AWrk" = { // workers — direct AMI ID example
+    ami_id    = "ami-xxxxxxxxxxxxxxxxx" // your AMI ID
+    ami_owner = "123456789012"          // your AWS account ID
+    ssh_user  = "cloud-user"
     count       = 1
     type        = "c6a.xlarge"
     volume_size = 100
