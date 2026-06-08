@@ -1,6 +1,6 @@
 locals {
   lib_platforms_rhel = {
-    "rhel_7" : {
+    "rhel_7" : { // no AMIs available in us-east-1 as of 2026-06
       "ami_name" : "RHEL-7.?_HVM*x86_64*Hourly2-GP2",
       "owner" : "309956199498",
       "interface" : "eth0"
@@ -8,7 +8,7 @@ locals {
       "ssh_user" : "ec2-user",
       "ssh_port" : 22
     },
-    "rhel_7.5" : {
+    "rhel_7.5" : { // no AMIs available in us-east-1 as of 2026-06
       "ami_name" : "RHEL-7.5_HVM*x86_64*Hourly2-GP2",
       "owner" : "309956199498",
       "interface" : "eth0"
@@ -16,7 +16,7 @@ locals {
       "ssh_user" : "ec2-user",
       "ssh_port" : 22
     },
-    "rhel_7.6" : {
+    "rhel_7.6" : { // no AMIs available in us-east-1 as of 2026-06
       "ami_name" : "RHEL-7.6_HVM*x86_64*Hourly2-GP2",
       "owner" : "309956199498",
       "interface" : "eth0"
@@ -24,7 +24,7 @@ locals {
       "ssh_user" : "ec2-user",
       "ssh_port" : 22
     },
-    "rhel_7.7" : {
+    "rhel_7.7" : { // no AMIs available in us-east-1 as of 2026-06
       "ami_name" : "RHEL-7.7_HVM*x86_64*Hourly2-GP2",
       "owner" : "309956199498",
       "interface" : "eth0"
@@ -32,7 +32,7 @@ locals {
       "ssh_user" : "ec2-user",
       "ssh_port" : 22
     },
-    "rhel_7.8" : {
+    "rhel_7.8" : { // no AMIs available in us-east-1 as of 2026-06
       "ami_name" : "RHEL-7.8_HVM*x86_64*Hourly2-GP2",
       "owner" : "309956199498",
       "interface" : "eth0"
@@ -48,7 +48,7 @@ locals {
       "ssh_user" : "ec2-user",
       "ssh_port" : 22
     },
-    "rhel_8.0" : {
+    "rhel_8.0" : { // no AMIs available in us-east-1 as of 2026-06
       "ami_name" : "RHEL-8.0_HVM-201?????-x86_64-*-Hourly2-GP2",
       "owner" : "309956199498",
       "interface" : "eth0"
@@ -56,7 +56,7 @@ locals {
       "ssh_user" : "ec2-user",
       "ssh_port" : 22
     },
-    "rhel_8.1" : {
+    "rhel_8.1" : { // no AMIs available in us-east-1 as of 2026-06
       "ami_name" : "RHEL-8.1.0_HVM-201?????-x86_64-*-Hourly2-GP2",
       "owner" : "309956199498",
       "interface" : "eth0"
@@ -64,7 +64,7 @@ locals {
       "ssh_user" : "ec2-user",
       "ssh_port" : 22
     },
-    "rhel_8.2" : {
+    "rhel_8.2" : { // no AMIs available in us-east-1 as of 2026-06
       "ami_name" : "RHEL-8.2_HVM-202?????-x86_64-*-Hourly2-GP2",
       "owner" : "309956199498",
       "interface" : "eth0"
@@ -72,7 +72,7 @@ locals {
       "ssh_user" : "ec2-user",
       "ssh_port" : 22
     },
-    "rhel_8.3" : {
+    "rhel_8.3" : { // no AMIs available in us-east-1 as of 2026-06
       "ami_name" : "RHEL-8.3*HVM-202?????-x86_64-*-Hourly2-GP2",
       "owner" : "309956199498",
       "interface" : "eth0"
@@ -80,7 +80,7 @@ locals {
       "ssh_user" : "ec2-user",
       "ssh_port" : 22
     },
-    "rhel_8.4" : {
+    "rhel_8.4" : { // no AMIs available in us-east-1 as of 2026-06
       "ami_name" : "RHEL-8.4*HVM-202?????-x86_64-*-Hourly2-GP2",
       "owner" : "309956199498",
       "interface" : "eth0"
@@ -88,7 +88,7 @@ locals {
       "ssh_user" : "ec2-user",
       "ssh_port" : 22
     },
-    "rhel_8.5" : {
+    "rhel_8.5" : { // no AMIs available in us-east-1 as of 2026-06
       "ami_name" : "RHEL-8.5*HVM-202?????-x86_64-*-Hourly2-GP2",
       "owner" : "309956199498",
       "interface" : "eth0"
@@ -96,7 +96,7 @@ locals {
       "ssh_user" : "ec2-user",
       "ssh_port" : 22
     },
-    "rhel_8.6" : {
+    "rhel_8.6" : { // no AMIs available in us-east-1 as of 2026-06
       "ami_name" : "RHEL-8.6*HVM-202?????-x86_64-*-Hourly2-GP2",
       "owner" : "309956199498",
       "interface" : "eth0"
@@ -104,7 +104,7 @@ locals {
       "ssh_user" : "ec2-user",
       "ssh_port" : 22
     },
-    "rhel_8.7" : {
+    "rhel_8.7" : { // no AMIs available in us-east-1 as of 2026-06
       "ami_name" : "RHEL-8.7*HVM-202?????-x86_64-*-Hourly2-GP2",
       "owner" : "309956199498",
       "interface" : "eth0"
@@ -112,7 +112,7 @@ locals {
       "ssh_user" : "ec2-user",
       "ssh_port" : 22
     },
-    "rhel_8.8" : {
+    "rhel_8.8" : { // no AMIs available in us-east-1 as of 2026-06
       "ami_name" : "RHEL-8.8*HVM-202?????-x86_64-*-Hourly2-GP2",
       "owner" : "309956199498",
       "interface" : "eth0"
@@ -120,7 +120,7 @@ locals {
       "ssh_user" : "ec2-user",
       "ssh_port" : 22
     },
-    "rhel_8.9" : {
+    "rhel_8.9" : { // no AMIs available in us-east-1 as of 2026-06
       "ami_name" : "RHEL-8.9.?_HVM-202?????-x86_64-*-Hourly2-GP?",
       "owner" : "309956199498",
       "interface" : "eth0"
@@ -144,7 +144,7 @@ locals {
       "ssh_user" : "ec2-user",
       "ssh_port" : 22
     },
-    "rhel_9.0" : {
+    "rhel_9.0" : { // no AMIs available in us-east-1 as of 2026-06
       "ami_name" : "RHEL-9.0*HVM-202?????-x86_64-*-Hourly2-GP2",
       "owner" : "309956199498",
       "interface" : "eth0"
@@ -152,7 +152,7 @@ locals {
       "ssh_user" : "ec2-user",
       "ssh_port" : 22
     },
-    "rhel_9.1" : {
+    "rhel_9.1" : { // no AMIs available in us-east-1 as of 2026-06
       "ami_name" : "RHEL-9.1*HVM-202?????-x86_64-*-Hourly2-GP2",
       "owner" : "309956199498",
       "interface" : "eth0"
@@ -160,7 +160,7 @@ locals {
       "ssh_user" : "ec2-user",
       "ssh_port" : 22
     },
-    "rhel_9.2" : {
+    "rhel_9.2" : { // no AMIs available in us-east-1 as of 2026-06
       "ami_name" : "RHEL-9.2*HVM-202?????-x86_64-*-Hourly2-GP2",
       "owner" : "309956199498",
       "interface" : "eth0"
@@ -168,7 +168,7 @@ locals {
       "ssh_user" : "ec2-user",
       "ssh_port" : 22
     },
-    "rhel_9.3" : {
+    "rhel_9.3" : { // no AMIs available in us-east-1 as of 2026-06
       "ami_name" : "RHEL-9.3*HVM-202?????-x86_64-*-Hourly2-GP?",
       "owner" : "309956199498",
       "interface" : "eth0"

@@ -1,6 +1,6 @@
 locals {
   lib_platforms_rocky = {
-    "rocky_8.5" : {
+    "rocky_8.5" : { // no AMIs available in us-east-1 as of 2026-06
       "ami_name" : "Rocky-8-EC2-8.5-*.x86_64",
       "owner" : "792107900819",
       "interface" : "eth0"
@@ -8,7 +8,7 @@ locals {
       "ssh_user" : "rocky",
       "ssh_port" : 22
     },
-    "rocky_8.6" : {
+    "rocky_8.6" : { // no AMIs available in us-east-1 as of 2026-06
       "ami_name" : "Rocky-8-ec2-8.6-*.x86_64",
       "owner" : "792107900819",
       "interface" : "eth0"
@@ -16,7 +16,7 @@ locals {
       "ssh_user" : "rocky",
       "ssh_port" : 22
     },
-    "rocky_8.7" : {
+    "rocky_8.7" : { // no AMIs available in us-east-1 as of 2026-06
       "ami_name" : "Rocky-8-EC2-Base-8.7-*.x86_64",
       "owner" : "792107900819",
       "interface" : "eth0"
@@ -24,7 +24,7 @@ locals {
       "ssh_user" : "rocky",
       "ssh_port" : 22
     },
-    "rocky_8.8" : {
+    "rocky_8.8" : { // no AMIs available in us-east-1 as of 2026-06
       "ami_name" : "Rocky-8-EC2-Base-8.8-*.x86_64",
       "owner" : "792107900819",
       "interface" : "eth0"
@@ -32,7 +32,7 @@ locals {
       "ssh_user" : "rocky",
       "ssh_port" : 22
     },
-    "rocky_8.9" : {
+    "rocky_8.9" : { // no AMIs available in us-east-1 as of 2026-06
       "ami_name" : "Rocky-8-EC2-Base-8.9-*.x86_64",
       "owner" : "792107900819",
       "interface" : "eth0"
@@ -40,7 +40,7 @@ locals {
       "ssh_user" : "rocky",
       "ssh_port" : 22
     },
-    "rocky_8" : {
+    "rocky_8" : { // no AMIs available in us-east-1 as of 2026-06
       "ami_name" : "Rocky-8-EC2-Base-8.*.x86_64",
       "owner" : "792107900819",
       "interface" : "eth0"
@@ -48,7 +48,7 @@ locals {
       "ssh_user" : "rocky",
       "ssh_port" : 22
     },
-    "rocky_9.0" : {
+    "rocky_9.0" : { // no AMIs available in us-east-1 as of 2026-06
       "ami_name" : "Rocky-9-EC2-9.0-*.x86_64",
       "owner" : "792107900819",
       "interface" : "eth0"
@@ -56,7 +56,7 @@ locals {
       "ssh_user" : "rocky",
       "ssh_port" : 22
     },
-    "rocky_9.1" : {
+    "rocky_9.1" : { // no AMIs available in us-east-1 as of 2026-06
       "ami_name" : "Rocky-9-EC2-Base-9.1-*.x86_64",
       "owner" : "792107900819",
       "interface" : "eth0"
@@ -64,7 +64,7 @@ locals {
       "ssh_user" : "rocky",
       "ssh_port" : 22
     },
-    "rocky_9.2" : {
+    "rocky_9.2" : { // no AMIs available in us-east-1 as of 2026-06
       "ami_name" : "Rocky-9-EC2-Base-9.2-*.x86_64",
       "owner" : "792107900819",
       "interface" : "eth0"
@@ -72,7 +72,7 @@ locals {
       "ssh_user" : "rocky",
       "ssh_port" : 22
     },
-    "rocky_9.3" : {
+    "rocky_9.3" : { // no AMIs available in us-east-1 as of 2026-06
       "ami_name" : "Rocky-9-EC2-Base-9.3-*.x86_64",
       "owner" : "792107900819",
       "interface" : "eth0"

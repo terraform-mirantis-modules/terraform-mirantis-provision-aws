@@ -1,6 +1,6 @@
 locals {
   lib_platforms_ubuntu = {
-    "ubuntu_16.04" : {
+    "ubuntu_16.04" : { // no AMIs available in us-east-1 as of 2026-06
       "ami_name" : "ubuntu/images/hvm-ssd/ubuntu-xenial-16.04-amd64-server-*",
       "owner" : "099720109477",
       "interface" : "ens5"
@@ -8,7 +8,7 @@ locals {
       "ssh_user" : "ubuntu",
       "ssh_port" : 22
     },
-    "ubuntu_18.04" : {
+    "ubuntu_18.04" : { // no AMIs available in us-east-1 as of 2026-06
       "ami_name" : "ubuntu/images/hvm-ssd/ubuntu-bionic-18.04-amd64-server-*",
       "owner" : "099720109477",
       "interface" : "ens5"

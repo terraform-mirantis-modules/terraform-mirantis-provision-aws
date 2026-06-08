@@ -1,6 +1,6 @@
 locals {
   lib_platforms_centos = {
-    "centos_7" : {
+    "centos_7" : { // no AMIs available in us-east-1 as of 2026-06
       "ami_name" : "CentOS Linux 7 x86_64*",
       "owner" : "125523088429",
       "interface" : "eth0"
@@ -8,7 +8,7 @@ locals {
       "ssh_user" : "centos",
       "ssh_port" : 22
     },
-    "centos_7.9" : {
+    "centos_7.9" : { // no AMIs available in us-east-1 as of 2026-06
       "ami_name" : "CentOS Linux 7 x86_64*",
       "owner" : "125523088429",
       "interface" : "eth0"
