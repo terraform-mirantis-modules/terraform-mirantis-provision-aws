@@ -26,6 +26,10 @@ terraform output -raw launchpad_yaml > launchpad.yaml
 launchpad apply -c launchpad.yaml
 ```
 
+## Bootc-based node groups (`is_bootc_based`)
+
+When `is_bootc_based = true`, every node group's `user_data` is replaced with the rendered `bootc_userdata.tpl` cloud-init instead of the per-node-group `user_data` input. In addition to granting `cloud-user` sudo/docker access, this cloud-init unconditionally preloads the `xt_statistic` kernel module via `/etc/modules-load.d/xt_statistic.conf` — required because bootc-mke3 images ship `kernel.modules_disabled=1`, which blocks loading `xt_statistic` (needed by `kube-proxy`/`calico-node` iptables rules) once `systemd-sysctl.service` applies that lockdown. Loading it from `modules-load.d` on first boot, before the sysctl lockdown takes effect, avoids the `CrashLoopBackOff`/`iptables-restore: Couldn't load match 'statistic'` failures otherwise seen on managers. This mirrors the same preload used for no-touch worker joins in `bootc-mke3`'s [`docs/operations-guide/join-machines-no-touch.md`](https://github.com/Mirantis/bootc-mke3/blob/main/docs/operations-guide/join-machines-no-touch.md).
+
 ## Inputs
 
 | Variable | Description | Default |
