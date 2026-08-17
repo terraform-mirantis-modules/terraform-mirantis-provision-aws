@@ -217,7 +217,7 @@ locals {
       "ssh_port" : 22
     },
     "rhel_9" : {
-      "ami_name" : "RHEL-9.7.0_HVM-20??????-x86_64-*-Hourly2-GP3",
+      "ami_name" : "RHEL-9.8.0_HVM_GA-20??????-x86_64-*-Hourly2-GP3",
       "owner" : "309956199498",
       "interface" : "eth0"
       "connection" : "ssh",
