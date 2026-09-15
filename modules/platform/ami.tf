@@ -17,10 +17,15 @@ data "aws_ami" "ami" {
 
 // variables calculated after ami data is pulled
 locals {
-  // combine ami/plaftorm data (and windows user data)
+  // combine ami/platform data (and windows user data, if applicable)
   platform_with_ami = merge(
     local.platform,
     data.aws_ami.ami,
-    { key : var.platform_key, ami : data.aws_ami.ami.id }
+    { key : var.platform_key, ami : data.aws_ami.ami.id },
+    {
+      user_data = local.platform.connection == "winrm" ? templatefile("${path.module}/userdata_windows.tpl", {
+        windows_administrator_password = var.windows_password
+      }) : ""
+    }
   )
 }
