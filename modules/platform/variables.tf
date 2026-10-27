@@ -1,3 +1,9 @@
+variable "ami" {
+  description = "Optional AMI id override. When set, the platform's newest-match AMI lookup is skipped and this image is used as-is, so re-applies do not pick up newly released images and roll the ASGs."
+  type        = string
+  default     = null
+}
+
 
 variable "platform_key" {
   description = "Platform name/label key for the platforms list, which must match the internal library of platforms."
