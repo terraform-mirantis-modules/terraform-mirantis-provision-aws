@@ -16,6 +16,12 @@ variable "type" {
   type        = string
 }
 
+variable "public" {
+  description = "Should the nodes receive a public IP address"
+  type        = bool
+  default     = true
+}
+
 variable "node_count" {
   description = "Number of machines to create"
   type        = number
