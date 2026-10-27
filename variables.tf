@@ -45,6 +45,8 @@ variable "nodegroups" {
     count                 = number
     root_device_name      = string
     volume_size           = number
+    volume_encrypted      = optional(bool, true)
+    volume_kms_key_id     = optional(string)
     role                  = string
     public                = bool
     user_data             = string

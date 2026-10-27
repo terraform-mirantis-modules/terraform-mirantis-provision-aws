@@ -31,6 +31,18 @@ variable "volume_size" {
   type        = number
 }
 
+variable "volume_encrypted" {
+  description = "Should the primary volume be EBS encrypted"
+  type        = bool
+  default     = true
+}
+
+variable "volume_kms_key_id" {
+  description = "KMS key ARN/ID to encrypt the primary volume with; null uses the account's default EBS key"
+  type        = string
+  default     = null
+}
+
 variable "subnets" {
   description = "Subnet list to attach machines to"
   type        = list(string)
