@@ -54,6 +54,16 @@ variable "nodegroups" {
     tags                  = optional(map(string), {})
   }))
   default = {}
+
+  validation {
+    # EC2 ignores a KMS key when encryption is off, so the combination would
+    # silently produce an unencrypted volume.
+    condition = alltrue([
+      for k, ng in var.nodegroups :
+      ng.volume_kms_key_id == null || ng.volume_encrypted
+    ])
+    error_message = "A nodegroup setting volume_kms_key_id must also set volume_encrypted = true; EC2 ignores the key when encryption is disabled."
+  }
 }
 
 # === Firewalls ===
