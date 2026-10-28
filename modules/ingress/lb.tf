@@ -43,22 +43,27 @@ resource "aws_lb_listener" "listeners" {
   }
 }
 
-// === build a list of all target group attachments across all routes ===
+// === build a map of all target group attachments across all routes ===
 
 locals {
 
-  target_instances = concat([for k, t in var.routes : [for i in var.instance_ids : {
-    target_group_arn = aws_lb_target_group.targets[k].arn,
-    instance_id      = i,
-    port             = t.port_target
-  }]]...)
+  // keyed by route and instance id, so an attachment's address does not
+  // depend on the ordering of var.instance_ids. the keys are route names and
+  // instance ids, both known before apply, so for_each can use them.
+  target_instances = merge([for k, t in var.routes : {
+    for i in var.instance_ids : "${k}:${i}" => {
+      target_group_arn = aws_lb_target_group.targets[k].arn,
+      instance_id      = i,
+      port             = t.port_target
+    }
+  }]...)
 
 }
 
 resource "aws_lb_target_group_attachment" "target_instances" {
-  count = length(local.target_instances)
+  for_each = local.target_instances
 
-  target_group_arn = local.target_instances[count.index].target_group_arn
-  target_id        = local.target_instances[count.index].instance_id
-  port             = local.target_instances[count.index].port
+  target_group_arn = each.value.target_group_arn
+  target_id        = each.value.instance_id
+  port             = each.value.port
 }

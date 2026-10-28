@@ -34,9 +34,12 @@ module "nodegroups" {
   node_count            = each.value.count
   root_device_name      = each.value.root_device_name
   volume_size           = each.value.volume_size
+  volume_encrypted      = each.value.volume_encrypted
+  volume_kms_key_id     = each.value.volume_kms_key_id
   user_data             = each.value.user_data
   key_pair              = each.value.keypair_id
   instance_profile_name = each.value.instance_profile_name
+  public                = each.value.public
   metadata_options      = each.value.metadata_options
   instance_refresh      = each.value.instance_refresh
 

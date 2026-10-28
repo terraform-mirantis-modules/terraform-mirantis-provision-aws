@@ -45,6 +45,7 @@ variable "nodegroups" {
     type                  = string
     count                 = number
     volume_size           = number
+    volume_encrypted      = optional(bool, true)
     role                  = string
     public                = bool
     user_data             = string
@@ -61,6 +62,8 @@ variable "nodegroups" {
     })
     keypair_id       = string
     root_device_name = string
+    # An AWS KMS key ARN/ID; requires volume_encrypted = true.
+    volume_kms_key_id = optional(string)
     # IMDS options; omitted fields keep IMDSv2 required, hop limit 1. Hop
     # limit 2 lets pods off the host network read the instance profile's
     # credentials.
@@ -71,6 +74,16 @@ variable "nodegroups" {
     }), {})
   }))
   default = {}
+
+  validation {
+    # EC2 ignores a KMS key when encryption is off, so the combination would
+    # silently produce an unencrypted volume.
+    condition = alltrue([
+      for k, ng in var.nodegroups :
+      ng.volume_kms_key_id == null || ng.volume_encrypted
+    ])
+    error_message = "A nodegroup setting volume_kms_key_id must also set volume_encrypted = true; EC2 ignores the key when encryption is disabled."
+  }
 }
 
 # === Firewalls ===

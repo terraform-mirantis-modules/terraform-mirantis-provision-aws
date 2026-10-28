@@ -46,7 +46,7 @@ module "mg" {
     {
       device_index                = 0
       delete_on_termination       = true
-      associate_public_ip_address = true
+      associate_public_ip_address = var.public
     }
   ]
 
@@ -57,7 +57,8 @@ module "mg" {
       no_device   = 0
       ebs = {
         delete_on_termination = true
-        encrypted             = false
+        encrypted             = var.volume_encrypted
+        kms_key_id            = var.volume_kms_key_id
         volume_size           = var.volume_size
         volume_type           = "gp3"
       }
