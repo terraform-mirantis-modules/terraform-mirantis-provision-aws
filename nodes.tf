@@ -37,6 +37,8 @@ module "nodegroups" {
   user_data             = each.value.user_data
   key_pair              = each.value.keypair_id
   instance_profile_name = each.value.instance_profile_name
+  metadata_options      = each.value.metadata_options
+  instance_refresh      = each.value.instance_refresh
 
   subnets         = local.map_subnets_to_ngs[each.key]
   security_groups = [for k, sg in local.securitygroups_with_sg : sg.id if contains(sg.nodegroups, each.key)] # attach any sgs listed for this nodegroup

@@ -50,6 +50,14 @@ variable "nodegroups" {
     user_data             = string
     instance_profile_name = optional(string)
     tags                  = optional(map(string), {})
+    # IMDS options; omitted fields keep IMDSv2 required, hop limit 1.
+    metadata_options = optional(object({
+      http_endpoint               = optional(string, "enabled")
+      http_put_response_hop_limit = optional(number, 1)
+      http_tokens                 = optional(string, "required")
+    }), {})
+    # true: launch template changes roll (replace) running instances.
+    instance_refresh = optional(bool, false)
   }))
   default = {}
 }
