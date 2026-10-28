@@ -37,6 +37,25 @@ variable "volume_size" {
   type        = number
 }
 
+variable "volume_encrypted" {
+  description = "Should the primary volume be EBS encrypted"
+  type        = bool
+  default     = true
+}
+
+variable "volume_kms_key_id" {
+  description = "KMS key ARN/ID to encrypt the primary volume with; null uses the account's default EBS key (aws/ebs, or the account default set via ModifyEbsDefaultKmsKeyId). A customer-managed key must allow kms:CreateGrant for AWSServiceRoleForAutoScaling, otherwise instances fail to launch with Client.InternalError and the failure surfaces as an ASG scaling error rather than a terraform error."
+  type        = string
+  default     = null
+
+  validation {
+    # EC2 ignores a key id when encryption is off, so the combination is a
+    # silent no-op rather than an error at the API.
+    condition     = var.volume_kms_key_id == null || var.volume_encrypted
+    error_message = "volume_kms_key_id requires volume_encrypted = true; EC2 ignores the key when encryption is disabled."
+  }
+}
+
 variable "subnets" {
   description = "Subnet list to attach machines to"
   type        = list(string)
