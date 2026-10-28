@@ -50,14 +50,19 @@ variable "nodegroups" {
     user_data             = string
     instance_profile_name = optional(string)
     tags                  = optional(map(string), {})
-    # IMDS options; omitted fields keep IMDSv2 required, hop limit 1.
-    metadata_options = optional(object({
-      http_endpoint               = optional(string, "enabled")
-      http_put_response_hop_limit = optional(number, 1)
-      http_tokens                 = optional(string, "required")
-    }), {})
-    # true: launch template changes roll (replace) running instances.
+    # Cross-cloud: true makes launch template changes roll (replace)
+    # running instances.
     instance_refresh = optional(bool, false)
+    # AWS-only settings. Kept in one object so a nodegroup definition moves
+    # between the aws, azure and gcp modules by swapping it.
+    aws = optional(object({
+      # IMDS options; omitted fields keep IMDSv2 required, hop limit 1.
+      metadata_options = optional(object({
+        http_endpoint               = optional(string, "enabled")
+        http_put_response_hop_limit = optional(number, 1)
+        http_tokens                 = optional(string, "required")
+      }), {})
+    }), {})
   }))
   default = {}
 }

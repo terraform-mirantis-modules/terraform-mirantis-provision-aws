@@ -37,7 +37,7 @@ module "nodegroups" {
   user_data             = each.value.user_data
   key_pair              = each.value.keypair_id
   instance_profile_name = each.value.instance_profile_name
-  metadata_options      = each.value.metadata_options
+  metadata_options      = each.value.aws.metadata_options
   instance_refresh      = each.value.instance_refresh
 
   subnets         = local.map_subnets_to_ngs[each.key]
