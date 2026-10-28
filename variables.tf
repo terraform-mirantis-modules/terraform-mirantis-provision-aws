@@ -36,22 +36,42 @@ variable "subnets" {
 
 variable "nodegroups" {
   description = "A map of machine group definitions"
+  # Fields are grouped by portability. Common fields have the same name and
+  # meaning in the aws, azure and gcp provision modules, so a nodegroup
+  # definition moves between clouds by changing only the cloud-specific
+  # fields.
   type = map(object({
-    source_image = object({
-      ami = string
-    })
-    keypair_id            = string
+    # --- Common (aws, azure, gcp) ---
     type                  = string
     count                 = number
-    root_device_name      = string
     volume_size           = number
     volume_encrypted      = optional(bool, true)
-    volume_kms_key_id     = optional(string)
     role                  = string
     public                = bool
     user_data             = string
     instance_profile_name = optional(string)
     tags                  = optional(map(string), {})
+    # true: launch template changes roll (replace) running instances.
+    # false (default): they reach new instances only.
+    instance_refresh = optional(bool, false)
+
+    # --- AWS-specific ---
+    # Each cloud's module shapes its image reference differently.
+    source_image = object({
+      ami = string
+    })
+    keypair_id       = string
+    root_device_name = string
+    # An AWS KMS key ARN/ID; requires volume_encrypted = true.
+    volume_kms_key_id = optional(string)
+    # IMDS options; omitted fields keep IMDSv2 required, hop limit 1. Hop
+    # limit 2 lets pods off the host network read the instance profile's
+    # credentials.
+    metadata_options = optional(object({
+      http_endpoint               = optional(string, "enabled")
+      http_put_response_hop_limit = optional(number, 1)
+      http_tokens                 = optional(string, "required")
+    }), {})
   }))
   default = {}
 

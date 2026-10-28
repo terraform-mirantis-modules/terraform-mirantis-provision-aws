@@ -26,7 +26,11 @@ module "mg" {
 
   launch_template_name = var.name
 
-  instance_refresh = {
+  metadata_options = var.metadata_options
+
+  # null omits the block: launch template changes then reach only new
+  # instances instead of rolling the running ones.
+  instance_refresh = var.instance_refresh ? {
     strategy = "Rolling"
     preferences = {
       checkpoint_delay       = 600
@@ -36,7 +40,7 @@ module "mg" {
       auto_rollback          = true
     }
     triggers = ["tag"]
-  }
+  } : null
 
   network_interfaces = [
     {
