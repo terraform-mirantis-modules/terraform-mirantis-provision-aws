@@ -42,7 +42,7 @@ module "mg" {
     {
       device_index                = 0
       delete_on_termination       = true
-      associate_public_ip_address = true
+      associate_public_ip_address = var.public
     }
   ]
 
