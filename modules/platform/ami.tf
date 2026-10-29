@@ -32,7 +32,10 @@ locals {
   // used as-is.
   platform_with_ami = merge(
     local.platform,
-    local.ami_data == null ? {} : local.ami_data,
+    // merge() skips null arguments, so no conditional is needed for the
+    // override case. A `null ? {} : data` conditional fails at plan time:
+    // {} and the aws_ami object are different types.
+    local.ami_data,
     { key : var.platform_key, ami : coalesce(var.ami, try(local.ami_data.id, null)) },
     {
       user_data = local.platform.connection == "winrm" ? join("\n", compact([
