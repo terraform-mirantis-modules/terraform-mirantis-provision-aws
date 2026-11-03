@@ -1,0 +1,51 @@
+// Stack name used to label all resources (CHANGE THIS)
+name = "windows-smoke"
+
+aws = {
+  region = "us-east-1"
+}
+
+network = {
+  cidr               = "172.31.0.0/16"
+  enable_nat_gateway = false
+  enable_vpn_gateway = false
+}
+
+subnets = {
+  "main" = {
+    cidr       = "172.31.0.0/17"
+    nodegroups = ["mgr", "win"]
+    private    = false
+  }
+}
+
+// One linux manager and one windows worker: the mixed shape launchpad's
+// windows suites provision. Swap the windows platform for windows_2019 or
+// windows_2025 to cover the other supported releases.
+nodegroups = {
+  "mgr" = {
+    platform    = "ubuntu_22.04"
+    type        = "m6a.xlarge"
+    count       = 1
+    volume_size = 100
+    role        = "manager"
+    public      = true
+  }
+  "win" = {
+    platform    = "windows_2022"
+    type        = "m6a.2xlarge"
+    count       = 1
+    volume_size = 100
+    role        = "worker"
+    public      = true
+  }
+}
+
+// The Windows/WinRM administrator password is generated unless you set one
+// here. Read the effective value after apply with:
+//   terraform output -raw windows_password
+# windows_password = ""
+
+extra_tags = {
+  purpose = "windows-example"
+}
