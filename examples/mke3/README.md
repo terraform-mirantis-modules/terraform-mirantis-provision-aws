@@ -38,7 +38,15 @@ launchpad apply -c launchpad.yaml
 | `mke` | MCR/MKE/MSR versions and MKE admin credentials | — |
 | `ssh_pk_location` | Directory to write the generated SSH private key | `./ssh-keys/` |
 | `windows_password` | WinRM password, required if any Windows workers are declared | `""` |
+| `create_instance_profile` | Create an IAM role + instance profile and attach it to every nodegroup (`iam.tf`) | `true` |
 | `extra_tags` | Additional AWS tags applied to all resources | `{}` |
+
+Per-nodegroup, in addition to the AMI source fields:
+
+| Field | Description | Default |
+|---|---|---|
+| `metadata_options` | IMDS settings. `http_put_response_hop_limit = 2` (or more) lets pods off the host network read the instance profile credentials | module default: endpoint enabled, hop limit 1, tokens required |
+| `instance_refresh` | `true` rolls running instances when the launch template changes; `false` applies only to new instances | `false` |
 
 ## Outputs
 
@@ -59,4 +67,8 @@ The bundled example creates a minimal two-node cluster:
 | `AMngr` | manager | RHEL 9.3 | m6a.2xlarge | 1 |
 | `AWrk_Ubu22` | worker | Ubuntu 22.04 | c6a.xlarge | 1 |
 
-To add MSR, declare a node group with `role = "msr"` and set `launchpad.msr_version`.
+To add MSR, declare a node group with `role = "msr"` and set
+`mke.msr_version`. A second load balancer is then created for MSR on 443,
+separate from the MKE one, because MSR answers from a different set of
+machines. With no msr-role node group the MSR ingress is not created at
+all.

@@ -60,6 +60,20 @@ variable "nodegroups" {
     role        = string
     public      = bool
     user_data   = optional(string, "")
+
+    // Passed straight through to the module. Both default to the module's
+    // own defaults when omitted, so existing definitions are unaffected.
+    //
+    // metadata_options: hop limit 2 is what lets a pod off the host network
+    // read the instance profile credentials; the mke-demo stacks set 3.
+    // instance_refresh: true rolls running instances when the launch
+    // template changes, instead of only affecting new ones.
+    metadata_options = optional(object({
+      http_endpoint               = optional(string, "enabled")
+      http_put_response_hop_limit = optional(number, 1)
+      http_tokens                 = optional(string, "required")
+    }))
+    instance_refresh = optional(bool, false)
   }))
 
   validation {
@@ -101,4 +115,9 @@ variable "is_bootc_based" {
   description = "If true, inject cloud-init user-data that configures cloud-user with sudo and docker group access using the stack SSH public key."
   type        = bool
   default     = false
+}
+variable "create_instance_profile" {
+  description = "Create an IAM role and instance profile and attach it to every nodegroup (see iam.tf). Requires IAM permissions in the target account; set false if the credentials running terraform cannot create roles."
+  type        = bool
+  default     = true
 }

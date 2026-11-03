@@ -49,6 +49,10 @@ module "provision" {
     role : ngd.role
     public : ngd.public
     user_data : var.is_bootc_based ? local.bootc_userdata : ngd.user_data
+
+    instance_profile_name : local.instance_profile_name
+    metadata_options : ngd.metadata_options
+    instance_refresh : ngd.instance_refresh
   } }
 
   // ingress/lb (should likely merge with an input to allow more flexibility
