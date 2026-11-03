@@ -28,8 +28,15 @@ variable "mke" {
 
 // locals calculated before the provision run
 locals {
+  // MSR gets its own load balancer, as launchpad's own aws-simple example
+  // does, because MSR answers on 443 from a different set of machines than
+  // MKE. The entry is dropped entirely when no nodegroup carries the msr
+  // role, so a cluster without MSR builds one ingress rather than an empty
+  // second load balancer.
+  msr_nodegroups = [for k, ng in var.nodegroups : k if ng.role == local.mke_role_msr]
+
   // standard MKE ingresses
-  mke_ingresses = {
+  mke_ingresses = merge({
     "mke" = {
       description = "MKE ingress for UI and Kube"
       nodegroups  = [for k, ng in var.nodegroups : k if ng.role == "manager"]
@@ -47,7 +54,21 @@ locals {
         }
       }
     }
-  }
+    },
+    length(local.msr_nodegroups) == 0 ? {} : {
+      "msr" = {
+        description = "MSR ingress"
+        nodegroups  = local.msr_nodegroups
+
+        routes = {
+          "msr" = {
+            port_incoming = 443
+            port_target   = 443
+            protocol      = "TCP"
+          }
+        }
+      }
+  })
 
   // standard MCR/MKE/MSR firewall rules [here we just leave it open until we can figure this out]
   mke_securitygroups = {
