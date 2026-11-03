@@ -55,6 +55,12 @@ terraform destroy
 
 ## Notes
 
+The stack uses an RSA key pair, not ed25519: EC2 rejects an ed25519 key on a
+Windows AMI when the launch template is validated, which surfaces as an
+autoscaling group creation failure on apply rather than a plan error. One key
+is shared by the whole stack, and Linux nodes accept RSA.
+
+
 The Windows password is generated unless `windows_password` is set in
 `terraform.tfvars`. Either way it is written into the instance's EC2
 user-data, because that is how the WinRM listener gets configured. Anything
