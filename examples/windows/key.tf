@@ -1,9 +1,18 @@
+# RSA, not ed25519.
 #
-# We could use multiple keys for this stack if needed
+# EC2 rejects an ed25519 key pair on a Windows AMI at launch template
+# validation time:
 #
+#   ValidationError: You must use a valid fully-formed launch template.
+#   ED25519 key pairs are not supported with Windows AMIs.
+#
+# The error surfaces as an autoscaling group creation failure, so it is only
+# reached on apply. One key is shared by every nodegroup in the stack, so the
+# whole stack uses RSA; linux nodes accept it. launchpad does the same, passing
+# ssh_key_algorithm = "rsa" for its windows and FIPS suites.
 
 module "key" {
-  source = "../../modules/key/ed25519"
+  source = "../../modules/key/rsa"
 
   name = "${var.name}-common"
   tags = local.tags
