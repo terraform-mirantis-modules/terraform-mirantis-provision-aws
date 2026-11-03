@@ -7,4 +7,5 @@ output "keypair_id" {
 output "private_key" {
   description = "Private key contents"
   value       = tls_private_key.rsa.private_key_openssh
+  sensitive   = true
 }

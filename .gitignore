@@ -1,0 +1,12 @@
+.terraform/
+
+# Applying any configuration in this repository writes state, variable
+# files and generated SSH keys beside the module. None of it belongs in a
+# published repository. .tfvars.example files are kept because they do not
+# match *.tfvars.
+*.tfstate
+*.tfstate.*
+*.tfvars
+*.pem
+*.key
+ssh-keys/

@@ -1,0 +1,6 @@
+.terraform/
+*.tfstate*
+*.tfvars
+*.pem
+ssh-keys/*
+k0sctl.y*ml
