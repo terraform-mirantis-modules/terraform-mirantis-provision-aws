@@ -99,7 +99,19 @@ and re-registered. There is no state move between the two: they are
 different resource types.
 
 ## Examples
-If you want to see a full example, check the [mke3 example](./examples/mke3).
+
+The [examples folder](./examples) holds one directory per example, each
+with its own README and `terraform.tfvars.example`:
+
+- [`examples/mke3`](./examples/mke3) - a full MKE 3 stack rendering
+  `launchpad.yaml`. Covers both AMI sources (platform library and a pinned
+  `ami_id`), an IAM instance profile, IMDS options, instance refresh, and
+  a separate MSR load balancer when an msr-role nodegroup is declared.
+- [`examples/k0sctl`](./examples/k0sctl) - controllers and workers behind
+  one load balancer on 6443, rendering `k0sctl.yaml`.
+- [`examples/windows`](./examples/windows) - a mixed Linux/Windows stack
+  covering the winrm platform path, the WinRM bootstrap user-data, a
+  port-range security group rule, and an ingress spanning two nodegroups.
 
 ## License
 
