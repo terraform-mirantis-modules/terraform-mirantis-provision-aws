@@ -19,9 +19,9 @@ variable "subnet_ids" {
   type        = list(string)
 }
 
-variable "instance_ids" {
-  description = "Instance/Machines to target with the ingress"
-  type        = list(string)
+variable "target_autoscaling_groups" {
+  description = "Autoscaling group name per nodegroup key, for the nodegroups this ingress targets. Nodegroups are attached as groups rather than as individual instances, matching the azure (lb_pool_ids) and gcp (target_instance_groups, target_pools) modules; a group handle is known at plan time, an instance id is not."
+  type        = map(string)
 }
 
 variable "routes" {

@@ -1,17 +1,17 @@
 
-// calculated before generating albs
+// Map each ingress to the autoscaling groups of the nodegroups it targets.
+// The gcp module builds the same mapping as mapped_instance_groups and
+// mapped_target_pools; azure builds it in the other direction, handing
+// lb_pool_ids to the scale sets. In all three the load balancer is given a
+// group to attach, never a list of instances.
 locals {
-  // combine the list of nodes for the ingress so that we can assign them as targets
-  ingresses_withnodes = { for k, i in var.ingresses : k => merge(
-    i,
-    {
-      nodes : concat([], [for k, n in local.nodegroups_safer : n.nodes if contains(i.nodegroups, k)]...),
-    }
-  ) }
+  mapped_autoscaling_groups = {
+    for ik, iv in var.ingresses : ik => { for ng in iv.nodegroups : ng => module.nodegroups[ng].asg.autoscaling_group_name }
+  }
 }
 
 module "ingress" {
-  for_each = local.ingresses_withnodes
+  for_each = var.ingresses
   source   = "./modules/ingress"
 
   name  = each.key
@@ -20,7 +20,7 @@ module "ingress" {
   vpc_id     = module.vpc.vpc_id
   subnet_ids = module.vpc.public_subnets
 
-  instance_ids = [for n in each.value.nodes : n.instance_id]
+  target_autoscaling_groups = local.mapped_autoscaling_groups[each.key]
 
   routes = each.value.routes
 
