@@ -43,27 +43,32 @@ resource "aws_lb_listener" "listeners" {
   }
 }
 
-// === build a map of all target group attachments across all routes ===
+// === attach each targeted nodegroup to every route's target group ===
 
 locals {
 
-  // keyed by route and instance id, so an attachment's address does not
-  // depend on the ordering of var.instance_ids. the keys are route names and
-  // instance ids, both known before apply, so for_each can use them.
-  target_instances = merge([for k, t in var.routes : {
-    for i in var.instance_ids : "${k}:${i}" => {
-      target_group_arn = aws_lb_target_group.targets[k].arn,
-      instance_id      = i,
-      port             = t.port_target
+  // Keyed by route and nodegroup. Both come from configuration, so the
+  // addresses are known at plan time and a given nodegroup keeps the same
+  // address regardless of how many instances it holds or what order they
+  // are listed in.
+  target_groups = merge([for rk, r in var.routes : {
+    for nk, asg in var.target_autoscaling_groups : "${rk}:${nk}" => {
+      target_group_arn = aws_lb_target_group.targets[rk].arn,
+      asg_name         = asg,
     }
   }]...)
 
 }
 
-resource "aws_lb_target_group_attachment" "target_instances" {
-  for_each = local.target_instances
+// The autoscaling group registers its own instances with the target group on
+// the target group's port (port_target) and deregisters them on scale-in, so
+// membership follows the group with no terraform run. This matches how the
+// azure and gcp modules attach nodegroups to their load balancers: azure
+// hands lb_pool_ids to the scale set, gcp hands instance groups and target
+// pools to its ingress. None of the three addresses individual instances.
+resource "aws_autoscaling_attachment" "nodegroups" {
+  for_each = local.target_groups
 
-  target_group_arn = each.value.target_group_arn
-  target_id        = each.value.instance_id
-  port             = each.value.port
+  autoscaling_group_name = each.value.asg_name
+  lb_target_group_arn    = each.value.target_group_arn
 }
