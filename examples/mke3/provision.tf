@@ -12,18 +12,18 @@ locals {
   //   - ami_id path:   merge nodegroup with data source results (provides ami, root_device_name)
   nodegroups_resolved = { for k, ngd in var.nodegroups : k => ngd.platform != null
     ? merge({
-        winrm_user     = ""
-        winrm_useHTTPS = false
-        winrm_insecure = false
-      }, ngd, local.platforms_with_ami[ngd.platform])
+      winrm_user     = ""
+      winrm_useHTTPS = false
+      winrm_insecure = false
+    }, ngd, local.platforms_with_ami[ngd.platform])
     : merge({
-        winrm_user     = ""
-        winrm_useHTTPS = false
-        winrm_insecure = false
+      winrm_user     = ""
+      winrm_useHTTPS = false
+      winrm_insecure = false
       }, ngd, {
-        ami              = data.aws_ami.nodegroup[k].id
-        root_device_name = data.aws_ami.nodegroup[k].root_device_name
-      })
+      ami              = data.aws_ami.nodegroup[k].id
+      root_device_name = data.aws_ami.nodegroup[k].root_device_name
+    })
   }
 }
 

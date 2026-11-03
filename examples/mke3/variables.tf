@@ -90,12 +90,6 @@ variable "extra_tags" {
   default     = {}
 }
 
-variable "windows_password" {
-  description = "Password to use with windows & winrm"
-  type        = string
-  default     = ""
-}
-
 variable "ssh_pk_location" {
   description = "Location of the ssh private key"
   type        = string
